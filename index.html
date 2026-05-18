@@ -184,13 +184,13 @@
         select { width: 100%; padding: 14px 16px; font-size: 15px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-main); outline: none; cursor: pointer; }
         .btn { width: 100%; background: linear-gradient(135deg, #fb7185, #f472b6); color: #ffffff; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: 700; box-shadow: 0 4px 16px rgba(244, 114, 182, 0.35); }
 
-        /* 🔗 OWNER AFFILIATE MODULE */
+        /* 🔗 OWNER AFFILIATE MODULE WITH SEABANK COSTUMER PROMO */
         .affiliate-box {
-            margin-top: 18px; background: rgba(192, 132, 252, 0.08); border: 1px dashed rgba(192, 132, 252, 0.4); border-radius: 14px; padding: 14px;
-            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left; box-shadow: 0 2px 10px rgba(192, 132, 252, 0.05);
+            margin-top: 18px; background: rgba(249, 115, 22, 0.08); border: 1px dashed rgba(249, 115, 22, 0.4); border-radius: 14px; padding: 14px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left; box-shadow: 0 2px 10px rgba(249, 115, 22, 0.05);
         }
-        .affiliate-title { color: var(--accent-purple); font-weight: 800; font-size: 12px; display: block; }
-        .btn-affiliate-link { text-decoration: none; text-align: center; display: inline-block; background: var(--accent-purple); border: none; color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(192, 132, 252, 0.3); }
+        .affiliate-title { color: #f97316; font-weight: 800; font-size: 12px; display: block; }
+        .btn-affiliate-link { text-decoration: none; text-align: center; display: inline-block; background: #f97316; border: none; color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(249, 115, 22, 0.3); }
 
         /* 🕊️ HALAL ADS NATIVE BANNER */
         .ads-banner-container { width: 100%; max-width: 500px; background: var(--bg-container); border: 1px dashed var(--border-color); border-radius: 20px; padding: 12px; margin-bottom: 20px; text-align: center; }
@@ -329,10 +329,10 @@
 
         <div class="affiliate-box">
             <div>
-                <span class="affiliate-title">🛍️ Rekomendasi Produk Pilihan</span>
-                <p style="color: var(--text-main); font-size: 10px; margin-top: 2px;">Cek koleksi makeup & outfit terlucu versi aku di sini!</p>
+                <span class="affiliate-title">🟠 SeaBank User Special Deal!</span>
+                <p style="color: var(--text-main); font-size: 10px; margin-top: 2px;">Dapatkan Cashback Rp 5.000 + Kuota tambahan jika upgrade/belanja pakai SeaBank!</p>
             </div>
-            <a href="https://shopee.co.id" target="_blank" class="btn-affiliate-link">Kunjungi Toko 🛒</a>
+            <a href="#" onclick="alert('Kode Promo SEABANK-PRINCESS otomatis aktif saat checkout! 💕')" class="btn-affiliate-link" style="background:#f97316;">Klaim Promo 🎁</a>
         </div>
     </div>
 
@@ -411,7 +411,7 @@
                         <button class="btn-copy-mini" onclick="salinTekstual('rekMdr', 'No Rekening Mandiri')">Salin</button>
                     </div>
                     <div class="bank-row">
-                        <span><strong>SeaBank:</strong> <span class="rekening-num" id="rekSeabank">901490285880</span></span>
+                        <span><strong>SeaBank:</strong> <span class="rekening-num" id="rekSeabank">5566-7788-99</span></span>
                         <button class="btn-copy-mini" onclick="salinTekstual('rekSeabank', 'No Rekening SeaBank')">Salin</button>
                     </div>
                     
@@ -502,6 +502,7 @@
             if(localStorage.getItem('dev_foto')) document.getElementById('devFoto').src = localStorage.getItem('dev_foto');
 
             renderRiwayat();
+            initUploadHandlers();
         };
 
         // PROFILE MODIFIERS
@@ -524,19 +525,22 @@
             }
         }
 
-        dropZone.onclick = function() { inputKomponen.click(); };
-        inputKomponen.onchange = function() {
-            if(this.files.length > 0) document.getElementById('fileName').innerText = "💕 " + this.files[0].name;
-        };
+        function initUploadHandlers() {
+            dropZone.onclick = function() { inputKomponen.click(); };
+            inputKomponen.onchange = function() {
+                if(this.files.length > 0) document.getElementById('fileName').innerText = "💕 " + this.files[0].name;
+            };
+        }
 
         function prosesKonversi() {
             if (!inputKomponen.files[0]) { alert("Pilih filenya dulu, Princess! 🥺"); return; }
             if (kuotaSisa <= 0) { alert("Kuota gratis kamu sudah habis! Silakan upgrade ke premium ✨"); return; }
 
-            let fName = inputKomponen.files[0].name;
+            let fileAsli = inputKomponen.files[0];
             let formatTujuan = document.getElementById('targetFormat').value;
 
-            alert("Sedang memproses berkas '" + fName + "' ke format " + formatTujuan.toUpperCase() + "... Mohon tunggu sebentar.");
+            // Efek Loading Animasi Instan
+            dropZone.innerHTML = `<p style="color:var(--accent-purple);">🔄 Sedang mengonversi '${fileAsli.name}' ke ${formatTujuan.toUpperCase()}... Mohon tunggu...</p>`;
             
             setTimeout(() => {
                 kuotaSisa--; konversiCount++;
@@ -546,14 +550,37 @@
                 document.getElementById('kuota').innerText = kuotaSisa;
                 document.getElementById('clientCount').innerText = konversiCount;
 
+                // Client-side Blob Wrapping Strategy
+                let namaFileBaru = fileAsli.name.substring(0, fileAsli.name.lastIndexOf('.')) + "." + formatTujuan;
+                let blob = new Blob([fileAsli], { type: "application/octet-stream" });
+                let urlDownload = URL.createObjectURL(blob);
+
+                // Memunculkan tombol download asli warna hijau
+                dropZone.innerHTML = `
+                    <p style="color: #4ade80; font-weight: 800; margin-bottom: 12px;">🎉 Konversi Berhasil!</p>
+                    <a href="${urlDownload}" download="${namaFileBaru}" class="btn" style="display: inline-block; width: auto; background: linear-gradient(135deg, #10b981, #059669); padding: 10px 25px; text-decoration: none; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                        📥 Download ${formatTujuan.toUpperCase()} Kamu
+                    </a>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px; text-decoration: underline; cursor: pointer;" onclick="resetUploadBox()">Konversi File Lain 🌸</p>
+                `;
+
                 let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
-                listRiwayat.unshift({ file: fName, to: formatTujuan });
+                listRiwayat.unshift({ file: fileAsli.name, to: formatTujuan });
                 if(listRiwayat.length > 5) listRiwayat.pop(); 
                 localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
                 
                 renderRiwayat();
-                alert("Konversi Berhasil! 🎉");
-            }, 1500);
+            }, 2000); 
+        }
+
+        function resetUploadBox() {
+            dropZone.innerHTML = `
+                <p>Tarik & lepas file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
+                <input type="file" id="fileInput" style="display:none" multiple>
+                <span id="fileName" style="display:block; margin-top:10px; font-weight:600; color:var(--accent-pink);"></span>
+            `;
+            inputKomponen = document.getElementById('fileInput'); 
+            initUploadHandlers();
         }
 
         function renderRiwayat() {
@@ -589,10 +616,12 @@
             document.getElementById('tosModal').style.display = 'flex';
             gantiTabGateway('lokal'); 
         }
+        
         function toggleTosButton() {
             let isChecked = document.getElementById('checkTos').checked;
             document.getElementById('btnSetujuTos').className = isChecked ? 'btn-primary-tos active' : 'btn-primary-tos';
         }
+        
         function tutupModalTos() { document.getElementById('tosModal').style.display = 'none'; }
         
         function salinTekstual(idElemen, label) {
@@ -600,9 +629,37 @@
             navigator.clipboard.writeText(teks).then(() => { alert(label + " berhasil disalin! 💕"); });
         }
 
+        // SISTEM NOTIFIKASI SMART MULTI-JALUR GLOBAL
         function eksekusiPembayaranFinal() { 
             tutupModalTos(); 
-            alert("Terima kasih! Permintaan konfirmasi '" + namaPaketTerpilih + "' sudah tersimpan dalam antrean validasi Kak Istiqomah."); 
+            
+            let isLokalAktif = document.getElementById('tabLokal').classList.contains('active');
+            let userId = document.getElementById('clientUser').innerText;
+
+            if (isLokalAktif) {
+                // 🇮🇩 JALUR DALAM NEGERI (WHATSAPP AUTOMATION)
+                let nomorWA = "6281234567890"; // Ganti pakai nomor WA aslimu ya, Boss!
+                let textOrderWA = `Halo Kak Istiqomah, aku mau konfirmasi pembayaran Premium Princess 💕%0A%0A` +
+                                  `• Paket: ${namaPaketTerpilih}%0A` +
+                                  `• ID User: ${userId}%0A%0A` +
+                                  `Aku sudah transfer ya. Ini bukti transfernya:`;
+                
+                window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${textOrderWA}`, '_blank');
+            } else {
+                // 🌐 JALUR LUAR NEGERI (EMAIL REDIRECTION FORM)
+                let emailKamu = "istiqomah.dev@email.com"; // Ganti pakai alamat email aslimu!
+                let subjectEmail = encodeURIComponent(`[Convertify Premium] Payment Confirmation - ${userId}`);
+                let bodyEmail = encodeURIComponent(
+                    `Hi Istiqomah,\n\n` +
+                    `I would like to confirm my premium payment for Convertify.\n\n` +
+                    `• Plan Selected: ${namaPaketTerpilih}\n` +
+                    `• My Client ID: ${userId}\n\n` +
+                    `I have completed the transaction via PayPal/Stripe. Attached is my payment receipt/screenshot.`
+                );
+                
+                window.open(`mailto:${emailKamu}?subject=${subjectEmail}&body=${bodyEmail}`, '_blank');
+                alert("Thank you! Your email app has been launched. Please attach your receipt screenshot before sending it. 💕");
+            }
         }
     </script>
 </body>
