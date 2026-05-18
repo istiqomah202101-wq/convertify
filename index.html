@@ -400,25 +400,21 @@
             </div>
             
             <div id="panelLokal">
+                <div class="pilihan-grup" style="margin: 15px 0;">
+                    <label style="color: var(--accent-pink);">PILIH METODE PEMBAYARAN BANK:</label>
+                    <select id="pilihanBankKonsumen" onchange="updateTampilanInstanBank()">
+                        <option value="seabank">🟠 SeaBank Transfer (Otomatis)</option>
+                        <option value="bca">🔵 Bank BCA Transfer</option>
+                        <option value="mandiri">🟡 Bank Mandiri Transfer</option>
+                        <option value="qris">🌸 Semua E-Wallet // QRIS (Gopay, OVO, DANA)</option>
+                    </select>
+                </div>
+
                 <div class="bank-info-box">
-                    <div class="bank-title">🏦 BANK TRANSFER</div>
+                    <div class="bank-title" id="labelNamaBankTerpilih">🏦 SEABANK TRANSFER</div>
                     <div class="bank-row">
-                        <span><strong>BCA:</strong> <span class="rekening-num" id="rekBca">1234-5678-90</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('rekBca', 'No Rekening BCA')">Salin</button>
-                    </div>
-                    <div class="bank-row">
-                        <span><strong>Mandiri:</strong> <span class="rekening-num" id="rekMdr">9876-5432-10</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('rekMdr', 'No Rekening Mandiri')">Salin</button>
-                    </div>
-                    <div class="bank-row">
-                        <span><strong>SeaBank:</strong> <span class="rekening-num" id="rekSeabank">5566-7788-99</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('rekSeabank', 'No Rekening SeaBank')">Salin</button>
-                    </div>
-                    
-                    <div class="bank-title" style="margin-top:10px;">📱 E-WALLET & QRIS</div>
-                    <div class="bank-row">
-                        <span><strong>DANA // QRIS:</strong> <span class="rekening-num" id="rekDana">0812-3456-7890</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('rekDana', 'Nomor E-Wallet DANA')">Salin</button>
+                        <span><strong>Nomor:</strong> <span class="rekening-num" id="nomorRekeningDitampilkan">5566-7788-99</span></span>
+                        <button class="btn-copy-mini" onclick="salinTekstual('nomorRekeningDitampilkan', 'Data Akun')">Salin</button>
                     </div>
                     <p style="margin-top: 8px; font-size: 11px; color: var(--accent-pink);">A/N: Istiqomah (Convertify Owner)</p>
                 </div>
@@ -442,12 +438,12 @@
             <div class="tos-box">
                 <p>1. Akun terikat sistem perangkat unik Anda.</p>
                 <p>2. Dilarang melakukan manipulasi bypass kuota server.</p>
-                <p>3. Konfirmasi pembayaran lokal otomatis 1-5 menit, internasional memerlukan waktu maks 1x24 jam.</p>
+                <p>3. Uang langsung ditransfer masuk asli ke kantong developer resmi.</p>
             </div>
             
             <label class="checkbox-container">
                 <input type="checkbox" id="checkTos" onchange="toggleTosButton()">
-                <span>Saya sudah paham dan setuju dengan ketentuan di atas.</span>
+                <span>Saya sudah paham, sudah transfer, dan setuju dengan ketentuan.</span>
             </label>
             
             <div class="tos-actions">
@@ -539,7 +535,6 @@
             let fileAsli = inputKomponen.files[0];
             let formatTujuan = document.getElementById('targetFormat').value;
 
-            // Efek Loading Animasi Instan
             dropZone.innerHTML = `<p style="color:var(--accent-purple);">🔄 Sedang mengonversi '${fileAsli.name}' ke ${formatTujuan.toUpperCase()}... Mohon tunggu...</p>`;
             
             setTimeout(() => {
@@ -550,12 +545,10 @@
                 document.getElementById('kuota').innerText = kuotaSisa;
                 document.getElementById('clientCount').innerText = konversiCount;
 
-                // Client-side Blob Wrapping Strategy
                 let namaFileBaru = fileAsli.name.substring(0, fileAsli.name.lastIndexOf('.')) + "." + formatTujuan;
                 let blob = new Blob([fileAsli], { type: "application/octet-stream" });
                 let urlDownload = URL.createObjectURL(blob);
 
-                // Memunculkan tombol download asli warna hijau
                 dropZone.innerHTML = `
                     <p style="color: #4ade80; font-weight: 800; margin-bottom: 12px;">🎉 Konversi Berhasil!</p>
                     <a href="${urlDownload}" download="${namaFileBaru}" class="btn" style="display: inline-block; width: auto; background: linear-gradient(135deg, #10b981, #059669); padding: 10px 25px; text-decoration: none; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
@@ -592,7 +585,27 @@
             });
         }
 
-        // MONETIZATION REGION TOGGLE SYSTEM
+        // DYNAMIC BANK REKENING SWITCHER (V6 DUST)
+        function updateTampilanInstanBank() {
+            let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
+            let labelBank = document.getElementById('labelNamaBankTerpilih');
+            let nomorRek = document.getElementById('nomorRekeningDitampilkan');
+
+            if (bankDipilih === "seabank") {
+                labelBank.innerText = "🏦 SEABANK TRANSFER (KANTONG UTAMA)";
+                nomorRek.innerText = "5566-7788-99"; // MASUKKAN REKENING SEABANK ASLIMU
+            } else if (bankDipilih === "bca") {
+                labelBank.innerText = "🏦 BANK BCA TRANSFER";
+                nomorRek.innerText = "1234-5678-90"; // MASUKKAN NO REK BCA ASLIMU
+            } else if (bankDipilih === "mandiri") {
+                labelBank.innerText = "🏦 BANK MANDIRI TRANSFER";
+                nomorRek.innerText = "9876-5432-10"; // MASUKKAN NO REK MANDIRI ASLIMU
+            } else if (bankDipilih === "qris") {
+                labelBank.innerText = "📱 QRIS / E-WALLET (GOPAY, OVO, DANA)";
+                nomorRek.innerText = "0812-3456-7890"; // MASUKKAN NO E-WALLET / LINK SAWERIA JIKA ADA
+            }
+        }
+
         function gantiTabGateway(region) {
             let tabLokal = document.getElementById('tabLokal');
             let tabInter = document.getElementById('tabInter');
@@ -615,6 +628,7 @@
             document.getElementById('btnSetujuTos').classList.remove('active');
             document.getElementById('tosModal').style.display = 'flex';
             gantiTabGateway('lokal'); 
+            updateTampilanInstanBank();
         }
         
         function toggleTosButton() {
@@ -629,20 +643,30 @@
             navigator.clipboard.writeText(teks).then(() => { alert(label + " berhasil disalin! 💕"); });
         }
 
-        // SISTEM NOTIFIKASI SMART MULTI-JALUR GLOBAL
+        // AUTOMATIC PAYMENT HUB ROUTER
         function eksekusiPembayaranFinal() { 
             tutupModalTos(); 
             
             let isLokalAktif = document.getElementById('tabLokal').classList.contains('active');
             let userId = document.getElementById('clientUser').innerText;
+            let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
 
             if (isLokalAktif) {
-                // 🇮🇩 JALUR DALAM NEGERI (WHATSAPP AUTOMATION)
+                // 💡 JALUR UTAMA OTOMATIS SAWERIA / QRIS KREATOR (UANG LANGSUNG MASUK NYATA)
+                // Jika konsumen pilih QRIS, arahkan langsung ke halaman kantong donasi/pembayaran digital aslimu
+                if (bankDipilih === "qris") {
+                    window.open("https://saweria.co/username_kamu", "_blank"); // 👈 GANTI DENGAN LINK SAWERIA/SOCIABUZZ KAMU
+                    alert("Membuka Gerbang Pembayaran QRIS/E-Wallet via Saweria. Uang otomatis masuk kantong developer! 💕");
+                    return;
+                }
+
+                // 🇮🇩 JALUR BANK TRANSFER MANUAL (DENGAN REKENING SEABANK/BCA)
                 let nomorWA = "6281234567890"; // Ganti pakai nomor WA aslimu ya, Boss!
-                let textOrderWA = `Halo Kak Istiqomah, aku mau konfirmasi pembayaran Premium Princess 💕%0A%0A` +
+                let textOrderWA = `Halo Kak Istiqomah, aku mau konfirmasi transfer pembayaran Premium Princess 💕%0A%0A` +
                                   `• Paket: ${namaPaketTerpilih}%0A` +
-                                  `• ID User: ${userId}%0A%0A` +
-                                  `Aku sudah transfer ya. Ini bukti transfernya:`;
+                                  `• ID User: ${userId}%0A` +
+                                  `• Bank Pengirim: ${bankDipilih.toUpperCase()}%0A%0A` +
+                                  `Aku sudah kirim uangnya, tolong dicek mutasi banknya ya kak!`;
                 
                 window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${textOrderWA}`, '_blank');
             } else {
@@ -654,11 +678,11 @@
                     `I would like to confirm my premium payment for Convertify.\n\n` +
                     `• Plan Selected: ${namaPaketTerpilih}\n` +
                     `• My Client ID: ${userId}\n\n` +
-                    `I have completed the transaction via PayPal/Stripe. Attached is my payment receipt/screenshot.`
+                    `I have completed the transaction via PayPal. Please check your balance.`
                 );
                 
                 window.open(`mailto:${emailKamu}?subject=${subjectEmail}&body=${bodyEmail}`, '_blank');
-                alert("Thank you! Your email app has been launched. Please attach your receipt screenshot before sending it. 💕");
+                alert("Thank you! Your email app has been launched. 💕");
             }
         }
     </script>
