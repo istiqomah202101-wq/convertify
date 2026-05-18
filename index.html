@@ -103,12 +103,12 @@
             z-index: 10;
         }
 
-        /* 📢 TOP ROW SPONSOR BANNER (NEW) */
+        /* 📢 TOP ROW SPONSOR BANNER */
         .top-ads-banner {
             width: 100%;
             max-width: 500px;
-            background: linear-gradient(90deg, rgba(244,114,182,0.1), rgba(192,132,252,0.1));
-            border: 1px solid var(--border-color);
+            background: linear-gradient(90deg, rgba(244,114,182,0.15), rgba(192,132,252,0.15));
+            border: 1px solid var(--accent-pink);
             border-radius: 16px;
             padding: 12px 16px;
             margin-bottom: 15px;
@@ -117,9 +117,10 @@
             align-items: center;
             font-size: 12px;
             backdrop-filter: blur(8px);
+            box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1);
         }
-        .top-ads-text { font-weight: 600; color: var(--text-main); }
-        .top-ads-link { color: var(--accent-rose); font-weight: 800; text-decoration: none; background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 8px; }
+        .top-ads-text { font-weight: 600; color: var(--text-main); text-align: left; line-height: 1.3; }
+        .top-ads-link { color: #fff; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #fb7185, #f472b6); padding: 6px 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(244, 114, 182, 0.3); }
 
         /* 💾 HUB PROFILE CARD */
         .hub-header-card {
@@ -183,13 +184,13 @@
         select { width: 100%; padding: 14px 16px; font-size: 15px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-main); outline: none; cursor: pointer; }
         .btn { width: 100%; background: linear-gradient(135deg, #fb7185, #f472b6); color: #ffffff; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: 700; box-shadow: 0 4px 16px rgba(244, 114, 182, 0.35); }
 
-        /* 🔗 AFFILIATE SHARING MODULE (NEW) */
+        /* 🔗 AFFILIATE SHARING MODULE */
         .affiliate-box {
-            margin-top: 18px; background: rgba(192, 132, 252, 0.06); border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 14px; padding: 12px;
-            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left;
+            margin-top: 18px; background: rgba(192, 132, 252, 0.08); border: 1px dashed rgba(192, 132, 252, 0.4); border-radius: 14px; padding: 14px;
+            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left; box-shadow: 0 2px 10px rgba(192, 132, 252, 0.05);
         }
-        .affiliate-title { color: var(--accent-purple); font-weight: 700; }
-        .btn-affiliate-copy { background: var(--accent-purple); border: none; color: white; padding: 4px 8px; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        .affiliate-title { color: var(--accent-purple); font-weight: 800; font-size: 12px; display: block; }
+        .btn-affiliate-copy { background: var(--accent-purple); border: none; color: white; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(192, 132, 252, 0.3); }
 
         /* 🕊️ HALAL ADS NATIVE BANNER */
         .ads-banner-container { width: 100%; max-width: 500px; background: var(--bg-container); border: 1px dashed var(--border-color); border-radius: 20px; padding: 12px; margin-bottom: 20px; text-align: center; }
@@ -212,7 +213,7 @@
 
         /* 🏦 REKENING BANK & GATEWAY SECTIONS (MULTI-REGION) */
         .gateway-tab-container { display: flex; gap: 8px; margin-bottom: 12px; }
-        .gateway-tab { flex: 1; padding: 6px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
+        .gateway-tab { flex: 1; padding: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
         .gateway-tab.active { background: var(--accent-pink); color: white; border-color: var(--accent-pink); }
 
         .bank-info-box { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 15px; text-align: left; font-size: 13px; }
@@ -570,7 +571,7 @@
             document.getElementById('checkTos').checked = false;
             document.getElementById('btnSetujuTos').classList.remove('active');
             document.getElementById('tosModal').style.display = 'flex';
-            gantiTabGateway('lokal'); // Default tab dalam negeri
+            gantiTabGateway('lokal'); 
         }
         function toggleTosButton() {
             let isChecked = document.getElementById('checkTos').checked;
@@ -584,7 +585,7 @@
         }
 
         function salinLinkReferral() {
-            let linkPalsu = window.location.href + "?ref=" + (localStorage.getItem('c_user_id') || "princess");
+            let linkPalsu = window.location.href.split('?')[0] + "?ref=" + (localStorage.getItem('c_user_id') || "princess");
             navigator.clipboard.writeText(linkPalsu).then(() => { alert("🔗 Link referral kamu berhasil disalin! Bagikan ke temanmu untuk dapat komisi. 💕"); });
         }
 
