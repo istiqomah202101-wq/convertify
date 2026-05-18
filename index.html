@@ -184,13 +184,13 @@
         select { width: 100%; padding: 14px 16px; font-size: 15px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-main); outline: none; cursor: pointer; }
         .btn { width: 100%; background: linear-gradient(135deg, #fb7185, #f472b6); color: #ffffff; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: 700; box-shadow: 0 4px 16px rgba(244, 114, 182, 0.35); }
 
-        /* 🔗 AFFILIATE SHARING MODULE */
+        /* 🔗 OWNER AFFILIATE MODULE (UPDATED SPECIAL) */
         .affiliate-box {
             margin-top: 18px; background: rgba(192, 132, 252, 0.08); border: 1px dashed rgba(192, 132, 252, 0.4); border-radius: 14px; padding: 14px;
             display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left; box-shadow: 0 2px 10px rgba(192, 132, 252, 0.05);
         }
         .affiliate-title { color: var(--accent-purple); font-weight: 800; font-size: 12px; display: block; }
-        .btn-affiliate-copy { background: var(--accent-purple); border: none; color: white; padding: 6px 12px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(192, 132, 252, 0.3); }
+        .btn-affiliate-link { text-decoration: none; text-align: center; display: inline-block; background: var(--accent-purple); border: none; color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(192, 132, 252, 0.3); }
 
         /* 🕊️ HALAL ADS NATIVE BANNER */
         .ads-banner-container { width: 100%; max-width: 500px; background: var(--bg-container); border: 1px dashed var(--border-color); border-radius: 20px; padding: 12px; margin-bottom: 20px; text-align: center; }
@@ -329,10 +329,10 @@
 
         <div class="affiliate-box">
             <div>
-                <span class="affiliate-title">💸 Program Kemitraan Afiliasi</span>
-                <p style="color: var(--text-main); font-size: 10px; margin-top: 2px;">Bagikan link tokomu & dapatkan komisi 20%!</p>
+                <span class="affiliate-title">🛍️ Rekomendasi Produk Pilihan</span>
+                <p style="color: var(--text-main); font-size: 10px; margin-top: 2px;">Cek koleksi makeup & outfit terlucu versi aku di sini!</p>
             </div>
-            <button class="btn-affiliate-copy" onclick="salinLinkReferral()">Salin Link</button>
+            <a href="https://shopee.co.id" target="_blank" class="btn-affiliate-link">Kunjungi Toko 🛒</a>
         </div>
     </div>
 
@@ -347,6 +347,17 @@
     <div class="pricing-container">
         <h3>✨ Upgrade to Premium Princess ✨</h3>
         <div class="tier-cards">
+            <div class="tier-card" style="border: 1px dashed var(--accent-purple);">
+                <h4>🍓 Berry Pack (Edisi Hemat)</h4>
+                <div class="price">Rp 15.000 <span>/ $1.00 USD</span></div>
+                <ul class="tier-features">
+                    <li>Kuota Tambahan +50 Konversi</li>
+                    <li>Masa aktif 1 minggu penuh</li>
+                    <li>Akses format SVG kecepatan standar</li>
+                </ul>
+                <button class="btn-pay" style="border-color: var(--accent-purple); color: var(--accent-purple);" onclick="bukaGerbangPembayaran('Berry Pack (Edisi Hemat)', 'Rp 15.000 // $1.00 USD')">Beli Sekarang 🍓</button>
+            </div>
+
             <div class="tier-card">
                 <h4>🌸 Candy Pack (1 Bulan)</h4>
                 <div class="price">Rp 29.000 <span>/ $2.00 USD</span></div>
@@ -360,13 +371,13 @@
             
             <div class="tier-card" style="border: 1px solid var(--accent-pink);">
                 <h4>👑 Diamond Queen (1 Tahun)</h4>
-                <div class="price">Rp 199.000 <span>/ $14.00 USD</span></div>
+                <div class="price">Rp 199.000 <span>/ $13.50 USD</span></div>
                 <ul class="tier-features">
                     <li>Semua fitur Candy Pack</li>
-                    <li>Hemat hingga 40%</li>
+                    <li>Semua fitur Berry Pack</li>
                     <li>Badge Premium Eksklusif</li>
                 </ul>
-                <button class="btn-pay" style="background: linear-gradient(135deg, #fb7185, #f472b6); color: white; border: none;" onclick="bukaGerbangPembayaran('Diamond Queen (1 Tahun)', 'Rp 199.000 // $14.00 USD')">Beli Sekarang ✨</button>
+                <button class="btn-pay" style="background: linear-gradient(135deg, #fb7185, #f472b6); color: white; border: none;" onclick="bukaGerbangPembayaran('Diamond Queen (1 Tahun)', 'Rp 199.000 // $13.50 USD')">Beli Sekarang ✨</button>
             </div>
         </div>
     </div>
@@ -582,11 +593,6 @@
         function salinTekstual(idElemen, label) {
             let teks = document.getElementById(idElemen).innerText;
             navigator.clipboard.writeText(teks).then(() => { alert(label + " berhasil disalin! 💕"); });
-        }
-
-        function salinLinkReferral() {
-            let linkPalsu = window.location.href.split('?')[0] + "?ref=" + (localStorage.getItem('c_user_id') || "princess");
-            navigator.clipboard.writeText(linkPalsu).then(() => { alert("🔗 Link referral kamu berhasil disalin! Bagikan ke temanmu untuk dapat komisi. 💕"); });
         }
 
         function eksekusiPembayaranFinal() { 
