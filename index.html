@@ -396,9 +396,10 @@
     <div class="pricing-container">
         <h3>✨ Upgrade to Premium Princess ✨</h3>
         <div class="tier-cards">
-            <div class="tier-card" style="border: 1px dashed var(--accent-purple);">
+            
+            <div class="tier-card" style="border: 1px dashed var(--accent-pink);">
                 <h4>🍓 Berry Pack (Edisi Hemat)</h4>
-                <div class="dynamic-price-box" id="hargaTierTeks">Rp 15.000 <span>/ $1.00 USD</span></div>
+                <div class="dynamic-price-box">Rp 15.000 <span>/ $1.00 USD</span></div>
                 <ul class="tier-features">
                     <li>Kuota Tambahan +50 Konversi</li>
                     <li>Masa aktif 1 minggu penuh</li>
@@ -406,6 +407,34 @@
                 </ul>
                 <button class="btn-pay" onclick="bukaGerbangPembayaran('Berry Pack')">Beli Sekarang 🍓</button>
             </div>
+
+            <div class="tier-card" style="border: 2px solid var(--accent-pink); background: rgba(244, 114, 182, 0.08);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h4>🍰 Strawberry Pack (Bulanan)</h4>
+                    <span class="dev-badge" style="background: var(--accent-pink); color: white;">Best Seller</span>
+                </div>
+                <div class="dynamic-price-box">Rp 45.000 <span>/ $3.00 USD</span></div>
+                <ul class="tier-features">
+                    <li>Kuota Tambahan +250 Konversi</li>
+                    <li>Masa aktif 1 bulan penuh</li>
+                    <li>Prioritas Kecepatan Konversi HD</li>
+                    <li>Akses Tema Kustom Eksklusif</li>
+                </ul>
+                <button class="btn" style="padding: 10px; font-size: 14px;" onclick="bukaGerbangPembayaran('Strawberry Pack')">Pilih Paket 🍰</button>
+            </div>
+
+            <div class="tier-card" style="border: 2px solid var(--accent-purple);">
+                <h4>👑 Infinity Pack (Tahunan)</h4>
+                <div class="dynamic-price-box" style="color: var(--accent-purple);">Rp 199.000 <span>/ $13.00 USD</span></div>
+                <ul class="tier-features">
+                    <li>Kuota <strong>UNLIMITED</strong> Tanpa Batas</li>
+                    <li>Masa aktif 1 tahun penuh</li>
+                    <li>Bebas Iklan Banner Selamanya</li>
+                    <li>Gelar 'Premium Princess VIP' di Web</li>
+                </ul>
+                <button class="btn-pay" style="border-color: var(--accent-purple); color: var(--accent-purple);" onclick="bukaGerbangPembayaran('Infinity Pack')">Ambil Setahun 👑</button>
+            </div>
+
         </div>
     </div>
 
@@ -492,6 +521,7 @@
         let kuotaSisa = 5;
         let konversiCount = 0;
         let gatewayAktif = 'lokal';
+        let namaPaketAktif = 'Berry Pack';
         
         // Web Audio Context Core
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -512,7 +542,6 @@
         }
 
         window.onload = function() {
-            // PERSISTENT THEME RECOVERY ENGINE
             const savedTheme = localStorage.getItem('c_theme') || 'dark';
             if(savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
@@ -542,7 +571,6 @@
             let bahasaUser = navigator.language || navigator.userLanguage;
             bahasaUser = bahasaUser.toLowerCase();
             if(!bahasaUser.includes('id') && !bahasaUser.includes('in')) {
-                document.getElementById('hargaTierTeks').innerHTML = "$1.00 USD <span>/ Rp 15.000</span>";
                 gantiTabGateway('inter');
             }
         }
@@ -575,7 +603,6 @@
             });
         }
 
-        // 🛡️ INDUSTRIAL VALIDATION (ANTI-CRASH 0,1%)
         function tambahkanFileKeList(files) {
             let fileDitolakCount = 0;
             for(let i=0; i<files.length; i++) {
@@ -819,7 +846,13 @@
         function gantiNamaDev() { let n = prompt("Nama Dev:", document.getElementById('devNamaText').innerText); if(n) document.getElementById('devNamaText').innerText = n; }
         function gantiBioDev() { let b = prompt("Bio Dev:", document.getElementById('devBioText').innerText); if(b) document.getElementById('devBioText').innerText = b; }
         function gantiNamaKonsumen() { let k = prompt("Nama Session:", document.getElementById('clientUser').innerText); if(k) document.getElementById('clientUser').innerText = k; }
-        function bukaGerbangPembayaran(p) { document.getElementById('modalTitle').innerText = "Pembayaran " + p; document.getElementById('tosModal').style.display = 'flex'; }
+        
+        function bukaGerbangPembayaran(p) { 
+            namaPaketAktif = p;
+            document.getElementById('modalTitle').innerText = "Pembayaran " + p; 
+            document.getElementById('tosModal').style.display = 'flex'; 
+        }
+        
         function tutupModalTos() { document.getElementById('tosModal').style.display = 'none'; }
         
         function toggleTosButton() {
@@ -843,21 +876,18 @@
             }
         }
 
-        // 🧠 GATEWAY PEMBAYARAN ADAPTIF SMART ENGINE (V16 COMPLETED)
         function eksekusiPembayaranFinal() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
-            let formatPesan = encodeURIComponent("Halo Kak Istiqomah, saya sudah transfer untuk Berry Pack. Kontak saya: " + kontak);
-            let formatPesanInggris = encodeURIComponent("Hello Istiqomah, I have transferred $1.00 USD for Berry Pack. My contact details: " + kontak);
+            let formatPesan = encodeURIComponent("Halo Kak Istiqomah, saya sudah transfer untuk " + namaPaketAktif + ". Kontak saya: " + kontak);
+            let formatPesanInggris = encodeURIComponent("Hello Istiqomah, I have transferred the payment for " + namaPaketAktif + ". My contact details: " + kontak);
 
             if (gatewayAktif === 'lokal') {
-                // 🇮🇩 TARGET INDONESIA: Mengarah langsung ke WhatsApp Admin
-                let nomorWA = "6281234567890"; // 👈 GANTI dengan nomor WhatsApp asli kamu (awali dengan kode negara 62)
+                let nomorWA = "6281234567890"; // 👈 GANTI dengan nomor WhatsApp asli kamu (awali dengan 62)
                 window.open("https://api.whatsapp.com/send?phone=" + nomorWA + "&text=" + formatPesan, "_blank");
                 showToast("✨ Mengalihkan ke WhatsApp untuk konfirmasi struk...");
             } else {
-                // 🌐 TARGET INTERNASIONAL: Mengarah langsung membuka Aplikasi Email Pengguna
                 let emailKamu = "istiqomah@example.com"; // 👈 GANTI dengan alamat email asli kamu
-                let subjek = encodeURIComponent("[Convertify Premium] PayPal Confirmation - Berry Pack");
+                let subjek = encodeURIComponent("[Convertify Premium] PayPal Confirmation - " + namaPaketAktif);
                 window.open("mailto:" + emailKamu + "?subject=" + subjek + "&body=" + formatPesanInggris, "_self");
                 showToast("✨ Membuka aplikasi email untuk kirim konfirmasi PayPal...");
             }
