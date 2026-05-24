@@ -580,12 +580,10 @@
             let fileDitolakCount = 0;
             for(let i=0; i<files.length; i++) {
                 let f = files[i];
-                // Validasi tipe file
                 if(!f.type.startsWith('image/')) {
                     fileDitolakCount++;
                     continue;
                 }
-                // Validasi batasan ukuran file (Maksimal 15MB agar browser tidak kehabisan RAM)
                 if(f.size > 15 * 1024 * 1024) {
                     fileDitolakCount++;
                     continue;
@@ -618,7 +616,6 @@
             renderListAntrianFile();
         }
 
-        // ENGINE UTAMA PROSES BATCH MULTI FILE + VISUAL LOADING PERCENTAGE
         async function prosesKonversiBatch() {
             if (daftarFileMasyarakat.length === 0) {
                 showToast("Masukkan file gambarmu dulu ke dalam kotak ya, Princess! 🥺");
@@ -632,7 +629,6 @@
             let formatTujuan = document.getElementById('targetFormat').value;
             let kualitas = parseFloat(document.getElementById('imageQuality').value);
             
-            // Tampilkan Loading Bar & Kunci Tombol
             let loadingBox = document.getElementById('loadingBarUmat');
             let loadingFill = document.getElementById('loadingBarFillElement');
             let triggerBtn = document.getElementById('mainTriggerBtn');
@@ -644,15 +640,12 @@
 
             for(let i=0; i < totalFiles; i++) {
                 let fileAman = daftarFileMasyarakat[i];
-                
-                // Hitung pergerakan persentase progres ring dinamis
                 let persentaseSelesai = Math.round(((i) / totalFiles) * 100);
                 loadingFill.style.width = persentaseSelesai + "%";
 
                 await jalankanKonversiTunggal(fileAman, formatTujuan, kualitas);
             }
 
-            // Selesaikan loading bar ke 100%
             loadingFill.style.width = "100%";
             setTimeout(() => {
                 loadingBox.style.display = 'none';
@@ -673,7 +666,7 @@
                 const reader = new FileReader();
                 reader.onerror = function() {
                     showToast(`⚠️ Gagal membaca file: ${file.name}`);
-                    resolve(); // Lewati file jika korup
+                    resolve();
                 };
                 reader.onload = function(event) {
                     const img = new Image();
@@ -704,7 +697,6 @@
                             urlHasil = dataUrlKeFormatLain(img, format, kualitas);
                         }
 
-                        // Mengunduh File
                         const a = document.createElement('a');
                         a.href = urlHasil;
                         a.download = namaFileBaru;
@@ -712,7 +704,6 @@
                         a.click();
                         document.body.removeChild(a);
 
-                        // Simpan riwayat & update counter kuota
                         kuotaSisa--;
                         konversiCount++;
                         localStorage.setItem('c_kuota', kuotaSisa);
@@ -726,7 +717,7 @@
                         localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
                         renderRiwayat();
 
-                        setTimeout(resolve, 150); // Delay jeda memori antar unduhan
+                        setTimeout(resolve, 150);
                     };
                     img.src = event.target.result;
                 };
@@ -801,7 +792,7 @@
         }
 
         function updateTampilanInstanBank() {
-            let b = document.getElementById('pilihanBankConsumers').value || document.getElementById('pilihanBankKonsumen').value;
+            let b = document.getElementById('pilihanBankKonsumen').value;
             if(b === 'seabank') {
                 document.getElementById('labelNamaBankTerpilih').innerText = "🏦 SEABANK TRANSFER";
                 document.getElementById('nomorRekeningDitampilkan').innerText = "5566-7788-99";
@@ -831,13 +822,11 @@
         function bukaGerbangPembayaran(p) { document.getElementById('modalTitle').innerText = "Pembayaran " + p; document.getElementById('tosModal').style.display = 'flex'; }
         function tutupModalTos() { document.getElementById('tosModal').style.display = 'none'; }
         
-        // 🧠 VALIDASI INPUT CERDAS (EMAIL / WA PATTERN)
         function toggleTosButton() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
             let dicentang = document.getElementById('checkTos').checked;
             let btn = document.getElementById('btnSetujuTos');
             
-            // Regex sederhana mengecek apakah input berupa format email atau nomor hp minimal 8 digit
             let emailAtauWaRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\+?[0-9]{8,15}$/;
             let kontakValid = emailAtauWaRegex.test(kontak);
 
@@ -854,9 +843,24 @@
             }
         }
 
+        // 🧠 GATEWAY PEMBAYARAN ADAPTIF SMART ENGINE (V16 COMPLETED)
         function eksekusiPembayaranFinal() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
-            showToast("✨ Konfirmasi sukses! Data (" + kontak + ") & lampiran diproses manual.");
+            let formatPesan = encodeURIComponent("Halo Kak Istiqomah, saya sudah transfer untuk Berry Pack. Kontak saya: " + kontak);
+            let formatPesanInggris = encodeURIComponent("Hello Istiqomah, I have transferred $1.00 USD for Berry Pack. My contact details: " + kontak);
+
+            if (gatewayAktif === 'lokal') {
+                // 🇮🇩 TARGET INDONESIA: Mengarah langsung ke WhatsApp Admin
+                let nomorWA = "6281234567890"; // 👈 GANTI dengan nomor WhatsApp asli kamu (awali dengan kode negara 62)
+                window.open("https://api.whatsapp.com/send?phone=" + nomorWA + "&text=" + formatPesan, "_blank");
+                showToast("✨ Mengalihkan ke WhatsApp untuk konfirmasi struk...");
+            } else {
+                // 🌐 TARGET INTERNASIONAL: Mengarah langsung membuka Aplikasi Email Pengguna
+                let emailKamu = "istiqomah@example.com"; // 👈 GANTI dengan alamat email asli kamu
+                let subjek = encodeURIComponent("[Convertify Premium] PayPal Confirmation - Berry Pack");
+                window.open("mailto:" + emailKamu + "?subject=" + subjek + "&body=" + formatPesanInggris, "_self");
+                showToast("✨ Membuka aplikasi email untuk kirim konfirmasi PayPal...");
+            }
             tutupModalTos();
         }
     </script>
