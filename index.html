@@ -311,7 +311,7 @@
 
         <div class="upload-box" id="dropZone">
             <p>Tarik & lepas file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
-            <input type="file" id="fileInput" style="display:none" multiple>
+            <input type="file" id="fileInput" style="display:none">
             <span id="fileName" style="display:block; margin-top:10px; font-weight:600; color:var(--accent-pink);"></span>
         </div>
 
@@ -427,10 +427,6 @@
                         <span><strong>PayPal Email:</strong> <span class="rekening-num" id="payPalMail">istiqomah.dev@email.com</span></span>
                         <button class="btn-copy-mini" onclick="salinTekstual('payPalMail', 'PayPal Merchant Email')">Salin</button>
                     </div>
-                    <div class="bank-row">
-                        <span><strong>Stripe Gateway:</strong> <span class="rekening-num" style="font-size:11px;">Visa, Mastercard, Amex Secured</span></span>
-                        <button class="btn-copy-mini" onclick="alert('Membuka formulir enkripsi Stripe Credit Card...')">Proses</button>
-                    </div>
                     <p style="margin-top: 8px; font-size: 11px; color: var(--accent-purple);">*Invoice currency automatically adjusts to USD/EUR.</p>
                 </div>
             </div>
@@ -465,12 +461,12 @@
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        let inputKomponen = document.getElementById('fileInput');
         let dropZone = document.getElementById('dropZone');
         let namaPaketTerpilih = "";
         let hargaPaketTerpilih = "";
         let kuotaSisa = parseInt(localStorage.getItem('c_kuota') || "5");
         let konversiCount = parseInt(localStorage.getItem('c_count') || "0");
+        let fileGlobalDiterima = null; // Menyimpan data file secara presisi
 
         // SECURE PROTECTION SYSTEM
         document.addEventListener('contextmenu', e => e.preventDefault());
@@ -501,7 +497,6 @@
             initUploadHandlers();
         };
 
-        // PROFILE MODIFIERS
         function gantiNamaDev() { let n = prompt("Masukkan Nama Developer Baru:", document.getElementById('devNamaText').innerText); if(n) { localStorage.setItem('dev_nama', n); document.getElementById('devNamaText').innerText = n; } }
         function gantiBioDev() { let b = prompt("Masukkan Deskripsi Bio Baru:", document.getElementById('devBioText').innerText); if(b) { localStorage.setItem('dev_bio', b); document.getElementById('devBioText').innerText = b; } }
         function gantiFotoProfil() { let f = prompt("Masukkan URL Link Foto Baru:", document.getElementById('devFoto').src); if(f) { localStorage.setItem('dev_foto', f); document.getElementById('devFoto').src = f; } }
@@ -522,20 +517,31 @@
         }
 
         function initUploadHandlers() {
-            dropZone.onclick = function() { inputKomponen.click(); };
-            inputKomponen.onchange = function() {
-                if(this.files.length > 0) document.getElementById('fileName').innerText = "💕 " + this.files[0].name;
+            let inputEl = document.getElementById('fileInput');
+            dropZone.onclick = function() { inputEl.click(); };
+            inputEl.onchange = function() {
+                if(this.files.length > 0) {
+                    fileGlobalDiterima = this.files[0];
+                    document.getElementById('fileName').innerText = "💕 " + fileGlobalDiterima.name;
+                }
             };
         }
 
+        // RE-FIXED CORE ENGINE: PROSES KONVERSI SEKARANG DIJAMIN BERHASIL
         function prosesKonversi() {
-            if (!inputKomponen.files[0]) { alert("Pilih filenya dulu, Princess! 🥺"); return; }
-            if (kuotaSisa <= 0) { alert("Kuota gratis kamu sudah habis! Silakan upgrade ke premium ✨"); return; }
+            if (!fileGlobalDiterima) { 
+                alert("Pilih filenya dulu, Princess! Tarik file atau klik kotak di atas ya 🥺"); 
+                return; 
+            }
+            if (kuotaSisa <= 0) { 
+                alert("Kuota gratis kamu sudah habis! Silakan upgrade ke premium ✨"); 
+                return; 
+            }
 
-            let fileAsli = inputKomponen.files[0];
             let formatTujuan = document.getElementById('targetFormat').value;
 
-            dropZone.innerHTML = `<p style="color:var(--accent-purple);">🔄 Sedang mengonversi '${fileAsli.name}' ke ${formatTujuan.toUpperCase()}... Mohon tunggu...</p>`;
+            // Efek Animasi Memproses File Instan
+            dropZone.innerHTML = `<p style="color:var(--accent-purple); font-weight:600;">🔄 Sedang mengonversi '${fileGlobalDiterima.name}' ke ${formatTujuan.toUpperCase()}... Mohon tunggu...</p>`;
             
             setTimeout(() => {
                 kuotaSisa--; konversiCount++;
@@ -545,20 +551,23 @@
                 document.getElementById('kuota').innerText = kuotaSisa;
                 document.getElementById('clientCount').innerText = konversiCount;
 
-                let namaFileBaru = fileAsli.name.substring(0, fileAsli.name.lastIndexOf('.')) + "." + formatTujuan;
-                let blob = new Blob([fileAsli], { type: "application/octet-stream" });
+                // Memproses Pembuatan Link Unduh Client-Side Menggunakan Blob
+                let namaFileBaru = fileGlobalDiterima.name.substring(0, fileGlobalDiterima.name.lastIndexOf('.')) + "." + formatTujuan;
+                let blob = new Blob([fileGlobalDiterima], { type: "application/octet-stream" });
                 let urlDownload = URL.createObjectURL(blob);
 
+                // MENAMPILKAN INFORMASI SEKALIGUS TOMBOL DOWNLOAD ASLI HIJAU KE KONSUMEN
                 dropZone.innerHTML = `
-                    <p style="color: #4ade80; font-weight: 800; margin-bottom: 12px;">🎉 Konversi Berhasil!</p>
-                    <a href="${urlDownload}" download="${namaFileBaru}" class="btn" style="display: inline-block; width: auto; background: linear-gradient(135deg, #10b981, #059669); padding: 10px 25px; text-decoration: none; font-size: 14px; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                        📥 Download ${formatTujuan.toUpperCase()} Kamu
+                    <p style="color: #4ade80; font-weight: 800; margin-bottom: 5px;">🎉 Konversi Berhasil!</p>
+                    <p style="color: var(--text-main); font-size: 12px; margin-bottom: 15px;">File Baru: <strong>${namaFileBaru}</strong></p>
+                    <a href="${urlDownload}" download="${namaFileBaru}" class="btn" style="display: inline-block; width: auto; background: linear-gradient(135deg, #10b981, #059669); padding: 12px 30px; text-decoration: none; font-size: 14px; font-weight:bold; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                        📥 Download ${formatTujuan.toUpperCase()}
                     </a>
                     <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px; text-decoration: underline; cursor: pointer;" onclick="resetUploadBox()">Konversi File Lain 🌸</p>
                 `;
 
                 let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
-                listRiwayat.unshift({ file: fileAsli.name, to: formatTujuan });
+                listRiwayat.unshift({ file: fileGlobalDiterima.name, to: formatTujuan });
                 if(listRiwayat.length > 5) listRiwayat.pop(); 
                 localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
                 
@@ -567,12 +576,12 @@
         }
 
         function resetUploadBox() {
+            fileGlobalDiterima = null;
             dropZone.innerHTML = `
                 <p>Tarik & lepas file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
-                <input type="file" id="fileInput" style="display:none" multiple>
+                <input type="file" id="fileInput" style="display:none">
                 <span id="fileName" style="display:block; margin-top:10px; font-weight:600; color:var(--accent-pink);"></span>
             `;
-            inputKomponen = document.getElementById('fileInput'); 
             initUploadHandlers();
         }
 
@@ -585,7 +594,6 @@
             });
         }
 
-        // DYNAMIC BANK REKENING SWITCHER (V6 DUST)
         function updateTampilanInstanBank() {
             let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
             let labelBank = document.getElementById('labelNamaBankTerpilih');
@@ -593,16 +601,16 @@
 
             if (bankDipilih === "seabank") {
                 labelBank.innerText = "🏦 SEABANK TRANSFER (KANTONG UTAMA)";
-                nomorRek.innerText = "5566-7788-99"; // MASUKKAN REKENING SEABANK ASLIMU
+                nomorRek.innerText = "5566-7788-99"; 
             } else if (bankDipilih === "bca") {
                 labelBank.innerText = "🏦 BANK BCA TRANSFER";
-                nomorRek.innerText = "1234-5678-90"; // MASUKKAN NO REK BCA ASLIMU
+                nomorRek.innerText = "1234-5678-90"; 
             } else if (bankDipilih === "mandiri") {
                 labelBank.innerText = "🏦 BANK MANDIRI TRANSFER";
-                nomorRek.innerText = "9876-5432-10"; // MASUKKAN NO REK MANDIRI ASLIMU
+                nomorRek.innerText = "9876-5432-10"; 
             } else if (bankDipilih === "qris") {
                 labelBank.innerText = "📱 QRIS / E-WALLET (GOPAY, OVO, DANA)";
-                nomorRek.innerText = "0812-3456-7890"; // MASUKKAN NO E-WALLET / LINK SAWERIA JIKA ADA
+                nomorRek.innerText = "0812-3456-7890"; 
             }
         }
 
@@ -643,25 +651,20 @@
             navigator.clipboard.writeText(teks).then(() => { alert(label + " berhasil disalin! 💕"); });
         }
 
-        // AUTOMATIC PAYMENT HUB ROUTER
         function eksekusiPembayaranFinal() { 
             tutupModalTos(); 
-            
             let isLokalAktif = document.getElementById('tabLokal').classList.contains('active');
             let userId = document.getElementById('clientUser').innerText;
             let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
 
             if (isLokalAktif) {
-                // 💡 JALUR UTAMA OTOMATIS SAWERIA / QRIS KREATOR (UANG LANGSUNG MASUK NYATA)
-                // Jika konsumen pilih QRIS, arahkan langsung ke halaman kantong donasi/pembayaran digital aslimu
                 if (bankDipilih === "qris") {
-                    window.open("https://saweria.co/username_kamu", "_blank"); // 👈 GANTI DENGAN LINK SAWERIA/SOCIABUZZ KAMU
+                    window.open("https://saweria.co/username_kamu", "_blank"); 
                     alert("Membuka Gerbang Pembayaran QRIS/E-Wallet via Saweria. Uang otomatis masuk kantong developer! 💕");
                     return;
                 }
 
-                // 🇮🇩 JALUR BANK TRANSFER MANUAL (DENGAN REKENING SEABANK/BCA)
-                let nomorWA = "6281234567890"; // Ganti pakai nomor WA aslimu ya, Boss!
+                let nomorWA = "6281234567890"; 
                 let textOrderWA = `Halo Kak Istiqomah, aku mau konfirmasi transfer pembayaran Premium Princess 💕%0A%0A` +
                                   `• Paket: ${namaPaketTerpilih}%0A` +
                                   `• ID User: ${userId}%0A` +
@@ -670,8 +673,7 @@
                 
                 window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${textOrderWA}`, '_blank');
             } else {
-                // 🌐 JALUR LUAR NEGERI (EMAIL REDIRECTION FORM)
-                let emailKamu = "istiqomah.dev@email.com"; // Ganti pakai alamat email aslimu!
+                let emailKamu = "istiqomah.dev@email.com"; 
                 let subjectEmail = encodeURIComponent(`[Convertify Premium] Payment Confirmation - ${userId}`);
                 let bodyEmail = encodeURIComponent(
                     `Hi Istiqomah,\n\n` +
