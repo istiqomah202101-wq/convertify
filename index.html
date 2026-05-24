@@ -694,20 +694,19 @@
         .gateway-tab { 
             flex: 1; 
             padding: 10px; 
-            background: rgba(0,0,0,0.2); 
+            background: var(--bg-box); 
             border: 1px solid var(--border-color); 
-            border-radius: 8px; 
-            color: var(--text-muted); 
-            font-size: 11px; 
-            font-weight: 700; 
-            cursor: pointer; 
             text-align: center; 
-            text-transform: uppercase; 
+            border-radius: 10px; 
+            font-size: 12px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            color: var(--text-muted); 
         }
 
         .gateway-tab.active { 
             background: var(--accent-pink); 
-            color: white; 
+            color: #ffffff; 
             border-color: var(--accent-pink); 
         }
 
@@ -1066,7 +1065,6 @@
         </div>
 
         <button class="btn" id="mainTriggerBtn" onclick="prosesKonversiBatch()">Mulai Konversi Sekaligus</button>
-
         <div class="security-badge">🔒 Browser Local Sandbox Secured // File Tidak Diunggah ke Server</div>
 
         <div class="affiliate-box">
@@ -1154,17 +1152,20 @@
 
             <div id="panelLokal">
                 <div class="pilihan-grup" style="margin-bottom: 12px;">
-                    <label>Pilih Metode Bank</label>
-                    <select id="pilihanBankKonsumen" onchange="updateTampilanInstanBank()">
+                    <label>Metode Bank Tujuan</label>
+                    <select id="pilihanBankKonsumen" disabled>
                         <option value="seabank">🟠 SeaBank Transfer</option>
-                        <option value="bca">🔵 Bank BCA Transfer</option>
                     </select>
                 </div>
                 <div class="bank-info-box">
-                    <div class="bank-title" id="labelNamaBankTerpilih">🏦 SEABANK TRANSFER</div>
+                    <div class="bank-title">🏦 SEABANK (Menerima Transfer Dari Bank Mana Saja)</div>
                     <div class="bank-row">
                         <span class="rekening-num" id="nomorRekeningDitampilkan">5566-7788-99</span>
                     </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.4;">
+                        *Bisa ditransfer lewat BCA, BRI, Mandiri, Dana, dll.<br>
+                        *Pilih bank tujuan: <strong>SEABANK</strong> (atau Bank Kesejahteraan Ekonomi).
+                    </p>
                 </div>
                 
                 <div class="pilihan-grup" style="margin-bottom:15px;">
@@ -1175,23 +1176,32 @@
             </div>
 
             <div id="panelInter" style="display: none;">
-                <div class="bank-info-box" style="border-color: var(--accent-purple); background: rgba(192,132,252,0.05); margin-bottom:15px;">
-                    <div class="bank-title" style="color: var(--accent-purple);">💳 PayPal Global Merchant</div>
-                    <p style="font-size: 11px; margin: 4px 0 10px 0; color: var(--text-main);">Silakan kirimkan pembayaran aman via PayPal ke email pengembang di bawah ini:</p>
+                <div class="bank-info-box" style="border-color: #3b82f6; background: rgba(59, 130, 246, 0.05);">
+                    <div class="bank-title" style="color: #3b82f6;">🌐 PAYPAL INTERNATIONAL GATEWAY</div>
                     <div class="bank-row">
-                        <span class="rekening-num" style="font-size: 13px;" id="emailPaypalDitampilkan">payment@convertify.global</span>
+                        <span class="rekening-num" id="emailPaypalDitampilkan" style="font-size: 13px;">payment@convertify.global</span>
                     </div>
+                    <p style="font-size: 11px; color: #93c5fd; margin-top: 8px; line-height: 1.4;">
+                        *Send your payment as <strong>"Friends & Family"</strong> to reduce fees.<br>
+                        *Screenshot the success receipt page for verification.
+                    </p>
+                </div>
+
+                <div class="pilihan-grup" style="margin-bottom:15px;">
+                    <label>Upload PayPal Receipt Screenshot</label>
+                    <input type="file" id="strukPaypalFile" accept="image/*" onchange="validasiUploadStrukPaypal()">
+                    <div class="struk-upload-area" id="strukPaypalStatusTeks">No screenshot selected</div>
                 </div>
             </div>
 
             <div class="pilihan-grup" style="margin-bottom: 15px;">
-                <label>Email / No. WhatsApp Kamu</label>
+                <label id="labelKontak">Email / No. WhatsApp Kamu</label>
                 <input type="text" id="kontakPembeli" placeholder="Contoh: princess@gmail.com atau +62812..." oninput="toggleTosButton()">
             </div>
 
             <label class="checkbox-container">
                 <input type="checkbox" id="checkTos" onchange="toggleTosButton()">
-                <span>Saya sudah paham dan benar-benar mentransfer.</span>
+                <span id="labelCheckTeks">Saya sudah paham dan benar-benar mentransfer.</span>
             </label>
             
             <div class="tos-actions">
@@ -1207,7 +1217,6 @@
 
     <div class="footer-copyright">&copy; 2026 Convertify. Created by <span>@chocoo_ming</span></div>
 
-
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({
@@ -1215,7 +1224,6 @@
                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
         }
-        
         window.addEventListener('DOMContentLoaded', (event) => {
             const scriptTranslate = document.createElement('script');
             scriptTranslate.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
@@ -1224,67 +1232,52 @@
         });
     </script>
 
-
     <script>
         
         // =========================================================
         //  🚨 CONFIG DATA OWNER - GLOBAL VARIABLES REFERENCE OBJECT
         // =========================================================
         const CONFIG_OWNER = {
-            nomorWhatsApp: "6281234567890",           // Silakan edit nomor tujuan WhatsApp Kakak di sini
-            emailPaypal: "payment@convertify.global",     // Silakan edit email akun tujuan PayPal Kakak di sini
-            rekeningSeaBank: "5566-7788-99",           // Silakan edit nomor rekening SeaBank Kakak di sini
-            rekeningBCA: "1122-3344-55"                // Silakan edit nomor rekening Bank BCA Kakak di sini
+            nomorWhatsApp: "6287742259806",           // Nomor tujuan WhatsApp (awali dengan 62)
+            emailPaypal: "payment@convertify.global",     // Email PayPal (Aktif berfungsi!)
+            rekeningSeaBank: "901490285880"            // Nomor rekening SeaBank
         };
         // =========================================================
 
-        // INSTANCE CONTROLLER RAM MEMORY 
         let daftarFileMasyarakat = []; 
         let kuotaSisa = 5;
         let konversiCount = 0;
-        let gatewayAktif = 'lokal';
         let namaPaketAktif = 'Berry Pack';
+        let tabAktifSekarang = 'lokal'; // 'lokal' atau 'inter'
         
-        // AUDIO ENGINE SYNTHESIS FOR CHIME SOUND SUCCESS
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playChimeSuccessSound() {
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-                
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-                
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
                 osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); 
-                
                 gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-                
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.4);
-            } catch(e) { 
-                console.log('AudioContext initialization status: blocked by user gesture.'); 
-            }
+            } catch(e) {}
         }
 
-        // --- APPS SYSTEM INITIALIZER LIFECYCLE ---
         window.onload = function() {
-            
-            // Integrasikan data dari Objek Config global menuju elemen visual UI modal
             document.getElementById('nomorRekeningDitampilkan').innerText = CONFIG_OWNER.rekeningSeaBank;
             document.getElementById('emailPaypalDitampilkan').innerText = CONFIG_OWNER.emailPaypal;
 
-            // Tarik cache status layout theme setting malam/siang dari memori lokal
             const savedTheme = localStorage.getItem('c_theme') || 'dark';
             if(savedTheme === 'light') {
                 document.documentElement.setAttribute('data-theme', 'light');
                 document.getElementById('themeBtn').innerText = "🌸 Dark Mode";
             }
 
-            // Inisialisasi kuota browser lokal bawaan jika pertama kali berkunjung
             if(!localStorage.getItem('c_kuota') || parseInt(localStorage.getItem('c_kuota')) <= 0) {
                 localStorage.setItem('c_kuota', "5");
             }
@@ -1295,93 +1288,76 @@
             document.getElementById('kuota').innerText = kuotaSisa;
             document.getElementById('clientCount').innerText = konversiCount;
             
-            // Pasang identitas unik sesi tamu agar terkesan dinamis layaknya cloud app
             let clientID = localStorage.getItem('c_user_id') || "PRNCS_" + Math.floor(1000 + Math.random() * 9000);
             localStorage.setItem('c_user_id', clientID);
             document.getElementById('clientUser').innerText = clientID;
 
-            // Launch listener runtime core event
             setupSistemPilihFileEvent();
             setupSistemDragDropEvent();
-            deteksiBahasaDanMataUangGlobal();
             renderRiwayat();
         };
 
-        // --- ENGINE DETEKSI BAHASA OTOMATIS NEGARA ASAL ---
-        function deteksiBahasaDanMataUangGlobal() {
-            let bahasaUser = navigator.language || navigator.userLanguage;
-            bahasaUser = bahasaUser.toLowerCase();
-            if(!bahasaUser.includes('id') && !bahasaUser.includes('in')) {
-                gantiTabGateway('inter');
-            }
-        }
-
-        // --- SISTEM NOTIFIKASI TOAST COMPONENT ANCHOR ---
         function showToast(pesan) {
             let toast = document.getElementById('toastNotif');
             document.getElementById('toastText').innerText = pesan;
             toast.classList.add('show');
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-            }, 3500);
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
         }
 
-        // --- SETUP LOGIKA FILE DRAG DROP DRAGOVER CODES ---
+        // --- MANAJEMEN NAVIGASI SAKLAR TAB GATEWAY INDO / INTER ---
+        function gantiTabGateway(jenis) {
+            tabAktifSekarang = jenis;
+            let tabLokal = document.getElementById('tabLokal');
+            let tabInter = document.getElementById('tabInter');
+            let panelLokal = document.getElementById('panelLokal');
+            let panelInter = document.getElementById('panelInter');
+            
+            let labelKontak = document.getElementById('labelKontak');
+            let labelCheckTeks = document.getElementById('labelCheckTeks');
+
+            if(jenis === 'lokal') {
+                tabLokal.classList.add('active');
+                tabInter.classList.remove('active');
+                panelLokal.style.display = 'block';
+                panelInter.style.display = 'none';
+                labelKontak.innerText = "Email / No. WhatsApp Kamu";
+                labelCheckTeks.innerText = "Saya sudah paham dan benar-benar mentransfer.";
+            } else {
+                tabInter.classList.add('active');
+                tabLokal.classList.remove('active');
+                panelLokal.style.display = 'none';
+                panelInter.style.display = 'block';
+                labelKontak.innerText = "Your Active Email Address";
+                labelCheckTeks.innerText = "I have successfully transferred the funds via PayPal.";
+            }
+            toggleTosButton();
+        }
+
         function setupSistemDragDropEvent() {
             let dropZone = document.getElementById('dropZone');
-            
             ['dragenter', 'dragover'].forEach(name => {
-                dropZone.addEventListener(name, (e) => { 
-                    e.preventDefault(); 
-                    dropZone.classList.add('dragover'); 
-                }, false);
+                dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }, false);
             });
-            
             ['dragleave', 'drop'].forEach(name => {
-                dropZone.addEventListener(name, (e) => { 
-                    e.preventDefault(); 
-                    dropZone.classList.remove('dragover'); 
-                }, false);
+                dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }, false);
             });
-            
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                tambahkanFileKeList(e.dataTransfer.files);
-            }, false);
+            dropZone.addEventListener('drop', (e) => { e.preventDefault(); tambahkanFileKeList(e.dataTransfer.files); }, false);
         }
 
-        // --- SETUP EVENT LISTENER BROWSE FILE SELECTION ---
         function setupSistemPilihFileEvent() {
             let input = document.getElementById('fileInput');
-            input.addEventListener('change', function() {
-                tambahkanFileKeList(this.files);
-            });
+            input.addEventListener('change', function() { tambahkanFileKeList(this.files); });
         }
 
-        // --- ALGORITMA PENYARING & VALIDASI EKSTENSI UKURAN FILE ---
         function tambahkanFileKeList(files) {
             let fileDitolakCount = 0;
-            
             for(let i=0; i<files.length; i++) {
                 let f = files[i];
-                
-                // Tolak jika bukan gambar
-                if(!f.type.startsWith('image/')) {
-                    fileDitolakCount++;
-                    continue;
-                }
-                
-                // Batasi alokasi RAM per file maksimal 15MB agar browser tidak crash
-                if(f.size > 15 * 1024 * 1024) {
-                    fileDitolakCount++;
-                    continue;
-                }
-                
+                if(!f.type.startsWith('image/')) { fileDitolakCount++; continue; }
+                if(f.size > 15 * 1024 * 1024) { fileDitolakCount++; continue; }
                 daftarFileMasyarakat.push(f);
             }
-            
             renderListAntrianFile();
-            
             if(fileDitolakCount > 0) {
                 showToast(`⚠️ ${fileDitolakCount} file dilewati (bukan gambar / ukuran >15MB)!`);
             } else {
@@ -1389,11 +1365,9 @@
             }
         }
 
-        // --- RENDER VISUAL DAFTAR FILE ANTRIAN BATCH BROWSER ---
         function renderListAntrianFile() {
             let container = document.getElementById('previewGridAntrian');
             container.innerHTML = "";
-            
             daftarFileMasyarakat.forEach((file, indeks) => {
                 container.innerHTML += `
                     <div class="file-preview-card">
@@ -1404,15 +1378,11 @@
             });
         }
 
-        // --- REMOVE ELEMENT SINGLE FILE FROM BUFFER LIST ---
         function hapusFileDariAntrian(indeks) {
             daftarFileMasyarakat.splice(indeks, 1);
             renderListAntrianFile();
         }
 
-        // =========================================================
-        //  ⚙️ LOOP CORE PROGRAM PROCESSING ENGINE (BATCH MULTI-FILE)
-        // =========================================================
         async function prosesKonversiBatch() {
             if (daftarFileMasyarakat.length === 0) {
                 showToast("Masukkan file gambarmu dulu ke dalam kotak ya, Princess! 🥺");
@@ -1435,17 +1405,14 @@
 
             let totalFiles = daftarFileMasyarakat.length;
 
-            // Jalankan antrean sekuensial asinkronus menggunakan await loop
             for(let i=0; i < totalFiles; i++) {
                 let fileAman = daftarFileMasyarakat[i];
                 let persentaseSelesai = Math.round(((i) / totalFiles) * 100);
                 loadingFill.style.width = persentaseSelesai + "%";
-
                 await jalankanKonversiTunggal(fileAman, formatTujuan, kualitas);
             }
 
             loadingFill.style.width = "100%";
-            
             setTimeout(() => {
                 loadingBox.style.display = 'none';
                 loadingFill.style.width = "0%";
@@ -1454,33 +1421,22 @@
 
             playChimeSuccessSound();
             showToast("🎉 Seluruh file batch sukses dikonversi & diunduh!");
-            
             daftarFileMasyarakat = [];
             document.getElementById('previewGridAntrian').innerHTML = "";
             bukaUlangSesiUpload();
         }
 
-        // --- CONVERSION INDIVIDUAL UNIT (SANDBOX PROCESSOR) ---
         function jalankanKonversiTunggal(file, format, kualitas) {
             return new Promise((resolve) => {
                 const reader = new FileReader();
-                
-                reader.onerror = function() { 
-                    resolve(); 
-                };
-                
+                reader.onerror = function() { resolve(); };
                 reader.onload = function(event) {
                     const img = new Image();
-                    
-                    img.onerror = function() { 
-                        resolve(); 
-                    };
-                    
+                    img.onerror = function() { resolve(); };
                     img.onload = function() {
                         let urlHasil = "";
                         let namaFileBaru = file.name.substring(0, file.name.lastIndexOf('.')) + "_converted." + format;
 
-                        // Eksekusi percabangan algoritma berdasarkan format output target
                         if (format === "pdf") {
                             const { jsPDF } = window.jspdf;
                             const doc = new jsPDF({
@@ -1488,7 +1444,6 @@
                                 unit: 'px',
                                 format: [img.width, img.height]
                             });
-                            
                             let dataJpgLokal = dataUrlKeJpgKompresi(img, kualitas);
                             doc.addImage(dataJpgLokal, 'JPEG', 0, 0, img.width, img.height);
                             urlHasil = doc.output('bloburl');
@@ -1496,7 +1451,6 @@
                             urlHasil = dataUrlKeFormatLain(img, format, kualitas);
                         }
 
-                        // Trigger auto-download jangkar virtual HTML5 anchor link tag
                         const a = document.createElement('a');
                         a.href = urlHasil;
                         a.download = namaFileBaru;
@@ -1504,24 +1458,19 @@
                         a.click();
                         document.body.removeChild(a);
 
-                        // Pengurangan kuota pemakaian harian & penambahan counter mutasi data
                         kuotaSisa--; 
                         konversiCount++;
-                        
                         localStorage.setItem('c_kuota', kuotaSisa);
                         localStorage.setItem('c_count', konversiCount);
-                        
                         document.getElementById('kuota').innerText = kuotaSisa;
                         document.getElementById('clientCount').innerText = konversiCount;
 
-                        // Tambahkan riwayat ke log aktivitas antrean local storage cache
                         let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
                         listRiwayat.unshift({ file: file.name, to: format });
                         if(listRiwayat.length > 3) listRiwayat.pop();
                         localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
                         renderRiwayat();
 
-                        // Berikan jeda renggang istirahat thread clock process hardware render browser sebesar 150ms
                         setTimeout(resolve, 150);
                     };
                     img.src = event.target.result;
@@ -1530,11 +1479,9 @@
             });
         }
 
-        // --- RENDERING CANVAS CONVERSION MATRIX ENGINE RAW DATA ---
         function dataUrlKeJpgKompresi(img, kualitas) {
             const canvas = document.createElement('canvas');
-            canvas.width = img.width; 
-            canvas.height = img.height;
+            canvas.width = img.width; canvas.height = img.height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             return canvas.toDataURL("image/jpeg", kualitas);
@@ -1542,15 +1489,13 @@
 
         function dataUrlKeFormatLain(img, format, kualitas) {
             const canvas = document.createElement('canvas');
-            canvas.width = img.width; 
-            canvas.height = img.height;
+            canvas.width = img.width; canvas.height = img.height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             let mime = format === "png" ? "image/png" : "image/jpeg";
             return canvas.toDataURL(mime, kualitas);
         }
 
-        // --- MEMBUKA ULANG ELEMENT STRUKTUR INPUT KOTAK DRAG DROP ZONE AFTER FINISHED ---
         function bukaUlangSesiUpload() {
             document.getElementById('dropZone').innerHTML = `
                 <div id="uploadPrompt">
@@ -1563,112 +1508,67 @@
             setupSistemDragDropEvent();
         }
 
-        // --- RENDER DAFTAR LOG TRANSAKSI HISTORY LOCAL STORAGE ---
         function renderRiwayat() {
             let container = document.getElementById('historyListContainer');
             let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
             container.innerHTML = "";
-            
             if(listRiwayat.length === 0) {
                 container.innerHTML = `<li class="history-item" style="color:var(--text-muted); text-align:center;">Belum ada aktivitas konversi</li>`;
                 return;
             }
-            
             listRiwayat.forEach(item => {
                 container.innerHTML += `<li class="history-item"><span>${item.file}</span><span style="color:var(--accent-purple)">to ${item.to.toUpperCase()}</span></li>`;
             });
         }
 
-        // --- SISTEM VALIDASI STRUK PEMBAYARAN KONSUMEN ---
+        // --- VALIDASI MEDIA BUKTI STRUK LOKAL & PAYPAL ---
         function validasiUploadStruk() {
             let fileStruk = document.getElementById('strukPembayaranFile').files;
-            if(fileStruk.length > 0) {
-                document.getElementById('strukStatusTeks').innerHTML = "💚 Struk Terdeteksi: " + fileStruk[0].name;
-            }
+            if(fileStruk.length > 0) { document.getElementById('strukStatusTeks').innerHTML = "💚 Struk Terdeteksi: " + fileStruk[0].name; }
             toggleTosButton();
         }
 
-        // --- SWITCH PANEL GATEWAY MODAL (LOKAL DAN INTERNASIONAL) ---
-        function gantiTabGateway(jenis) {
-            gatewayAktif = jenis;
-            if(jenis === 'lokal') {
-                document.getElementById('tabLokal').classList.add('active');
-                document.getElementById('tabInter').classList.remove('active');
-                document.getElementById('panelLokal').style.display = 'block';
-                document.getElementById('panelInter').style.display = 'none';
-            } else {
-                document.getElementById('tabInter').classList.add('active');
-                document.getElementById('tabLokal').classList.remove('active');
-                document.getElementById('panelInter').style.display = 'block';
-                document.getElementById('panelLokal').style.display = 'none';
-            }
+        function validasiUploadStrukPaypal() {
+            let fileStruk = document.getElementById('strukPaypalFile').files;
+            if(fileStruk.length > 0) { document.getElementById('strukPaypalStatusTeks').innerHTML = "💚 Screenshot Saved: " + fileStruk[0].name; }
             toggleTosButton();
         }
 
-        // --- INTERACTION DINAMIS SELECTION BANK TARGET ACCOUNT DATA ---
-        function updateTampilanInstanBank() {
-            let b = document.getElementById('pilihanBankKonsumen').value;
-            if(b === 'seabank') {
-                document.getElementById('labelNamaBankTerpilih').innerText = "🏦 SEABANK TRANSFER";
-                document.getElementById('nomorRekeningDitampilkan').innerText = CONFIG_OWNER.rekeningSeaBank;
-            } else {
-                document.getElementById('labelNamaBankTerpilih').innerText = "🏦 BANK BCA TRANSFER";
-                document.getElementById('nomorRekeningDitampilkan').innerText = CONFIG_OWNER.rekeningBCA;
-            }
-        }
-
-        // --- INTERACTION MANAGEMENT SWITCH THEME GANTI LAYOUT WARNA GLOBAL ---
         function toggleTheme() {
             const body = document.documentElement;
             if (body.getAttribute('data-theme') === 'light') { 
-                body.removeAttribute('data-theme'); 
-                localStorage.setItem('c_theme', 'dark');
+                body.removeAttribute('data-theme'); localStorage.setItem('c_theme', 'dark');
                 document.getElementById('themeBtn').innerText = "🌸 Light Mode";
             } else { 
-                body.setAttribute('data-theme', 'light'); 
-                localStorage.setItem('c_theme', 'light');
+                body.setAttribute('data-theme', 'light'); localStorage.setItem('c_theme', 'light');
                 document.getElementById('themeBtn').innerText = "🌸 Dark Mode";
             }
         }
 
-        // =========================================================
-        //  📂 SISTEM INTERAKTIF GANTI DATA PROFIL SECARA LIVE
-        // =========================================================
-        
-        // Pemicu jendela file explorer laptop saat gambar bulat diklik
-        function pemicuPilihFotoLaptop() {
-            document.getElementById('inputFotoLaptop').click();
-        }
-
-        // Proses membaca file gambar dari laptop dan memasangnya ke halaman web
+        function pemicuPilihFotoLaptop() { document.getElementById('inputFotoLaptop').click(); }
         function prosesGantiFotoLaptop() {
             const input = document.getElementById('inputFotoLaptop');
             if (input.files && input.files[0]) {
                 const pembacaFile = new FileReader();
-                pembacaFile.onload = function(e) {
-                    document.getElementById('devFoto').src = e.target.result;
-                };
+                pembacaFile.onload = function(e) { document.getElementById('devFoto').src = e.target.result; };
                 pembacaFile.readAsDataURL(input.files[0]);
             }
         }
 
-        // Fungsi ganti teks nama, bio, dan nama konsumen
         function gantiNamaDev() { let n = prompt("Nama Dev:", document.getElementById('devNamaText').innerText); if(n) document.getElementById('devNamaText').innerText = n; }
         function gantiBioDev() { let b = prompt("Bio Dev:", document.getElementById('devBioText').innerText); if(b) document.getElementById('devBioText').innerText = b; }
         function gantiNamaKonsumen() { let k = prompt("Nama Session:", document.getElementById('clientUser').innerText); if(k) document.getElementById('clientUser').innerText = k; }
         
-        // --- GATEWAY MODAL WINDOW CONTROLLER CODES ---
         function bukaGerbangPembayaran(p) { 
             namaPaketAktif = p;
             document.getElementById('modalTitle').innerText = "Pembayaran " + p; 
             document.getElementById('tosModal').style.display = 'flex'; 
+            gantiTabGateway('lokal'); // Default reset tab ke lokal saat modal terbuka
         }
         
-        function tutupModalTos() { 
-            document.getElementById('tosModal').style.display = 'none'; 
-        }
+        function tutupModalTos() { document.getElementById('tosModal').style.display = 'none'; }
         
-        // --- MULTI-VALIDATOR REALTIME SUBMIT BUTTON FILTER KEY ---
+        // --- MULTI-VALIDATOR REALTIME DUA TAB METODE ---
         function toggleTosButton() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
             let dicentang = document.getElementById('checkTos').checked;
@@ -1677,30 +1577,42 @@
             let emailAtauWaRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\+?[0-9]{8,15}$/;
             let kontakValid = emailAtauWaRegex.test(kontak);
             
-            let statusStrukAman = true;
-            if (gatewayAktif === 'lokal') {
-                let strukInput = document.getElementById('strukPembayaranFile').files;
-                statusStrukAman = (strukInput.length > 0);
+            let statusFileAman = false;
+            if(tabAktifSekarang === 'lokal') {
+                statusFileAman = (document.getElementById('strukPembayaranFile').files.length > 0);
+            } else {
+                statusFileAman = (document.getElementById('strukPaypalFile').files.length > 0);
             }
             
-            if(kontakValid && dicentang && statusStrukAman) { 
+            if(kontakValid && dicentang && statusFileAman) { 
                 btn.classList.add('active'); 
             } else { 
                 btn.classList.remove('active'); 
             }
         }
 
-        // --- REDIRECTION OUTBOUND LINKS SUBMISSION EXECUTOR FINAL MODULE ---
+        // --- EKSEKUSI LOGIKA TOMBOL KONFIRMASI PEMBAYARAN FINAL ---
         function eksekusiPembayaranFinal() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
-            let formatPesan = encodeURIComponent("Halo Kak Istiqomah, saya sudah transfer untuk " + namaPaketAktif + ". Kontak saya: " + kontak);
-            let formatPesanInggris = encodeURIComponent("Hello Istiqomah, I have transferred payment for " + namaPaketAktif + ". Contact: " + kontak);
+            let formatPesan = "";
 
-            if (gatewayAktif === 'lokal') {
+            if(tabAktifSekarang === 'lokal') {
+                // Alur Lokal: Diarahkan ke WhatsApp dengan pesan teks otomatis
+                formatPesan = encodeURIComponent("Halo Kak Istiqomah, saya sudah transfer via SeaBank untuk " + namaPaketAktif + ". Kontak saya: " + kontak);
                 window.open("https://api.whatsapp.com/send?phone=" + CONFIG_OWNER.nomorWhatsApp + "&text=" + formatPesan, "_blank");
             } else {
-                let subjek = encodeURIComponent("[Convertify Premium] PayPal Confirmation - " + namaPaketAktif);
-                window.open("mailto:" + CONFIG_OWNER.emailPaypal + "?subject=" + subjek + "&body=" + formatPesanInggris, "_self");
+                // Alur Internasional: Mengarahkan pembeli langsung ke halaman kirim dana PayPal kamu
+                let nominalUang = "1.00"; 
+                if(namaPaketAktif.includes("Strawberry")) nominalUang = "3.00";
+                if(namaPaketAktif.includes("Infinity")) nominalUang = "13.00";
+
+                // URL Resmi PayPal Me / PayPal Pay Note Generator Link
+                let linkPaypalKirim = "https://www.paypal.com/paypalme/" + CONFIG_OWNER.emailPaypal.split('@')[0] + "/" + nominalUang + "USD";
+                
+                showToast("Redirecting to PayPal Checkout... Please complete the transaction! 🌐");
+                setTimeout(() => {
+                    window.open(linkPaypalKirim, "_blank");
+                }, 1000);
             }
             tutupModalTos();
         }
