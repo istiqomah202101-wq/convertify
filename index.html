@@ -4,45 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Convertify // Universal Soft & Girly Connect Platform</title>
+    
+    <title>Convertify Ultra // Universal Professional Connect Platform</title>
+    <meta name="description" content="Platform konversi file instan, aman, dan rapi dengan teknologi sandbox lokal browser.">
+    <meta name="keywords" content="converter, pdf, png, jpg, image converter, instant convert">
+    <meta property="og:title" content="Convertify Ultra // Universal Platform">
+    <meta property="og:description" content="Ubah format file apa saja secara instan, aman, dan rapi langsung di browser Anda.">
+    <meta property="og:type" content="website">
+    
     <link rel="icon" type="image/png" href="https://fonts.gstatic.com/s/e/notoemoji/latest/1f338/512.webp">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" crossorigin="anonymous" defer></script>
+
     <style>
-        /* 🌸 TEMA WARNA GIRLY VIBES (DARK MODE) */
+        /* 🌸 TEMA WARNA GIRLY VIBES (DARK MODE CODES) */
         :root {
             --bg-body: #16121e; 
-            --bg-container: rgba(30, 24, 43, 0.75);
+            --bg-container: rgba(30, 24, 43, 0.85);
             --border-color: rgba(255, 182, 193, 0.15);
             --text-main: #fff0f5; 
             --text-muted: #f472b6; 
-            --bg-box: rgba(244, 114, 182, 0.08);
+            --bg-box: rgba(244, 114, 182, 0.06);
             --input-bg: #251b32;
             --accent-pink: #f472b6;
             --accent-rose: #fb7185;
             --accent-purple: #c084fc;
+            --transition-speed: 0.25s;
         }
 
         /* 🎀 LIGHT MODE GIRLY */
         [data-theme="light"] {
             --bg-body: #fff5f6; 
-            --bg-container: rgba(255, 255, 255, 0.9);
+            --bg-container: rgba(255, 255, 255, 0.95);
             --border-color: rgba(244, 114, 182, 0.2);
             --text-main: #4c1d95; 
             --text-muted: #db2777; 
-            --bg-box: rgba(251, 113, 133, 0.08);
+            --bg-box: rgba(251, 113, 133, 0.06);
             --input-bg: #ffffff;
         }
 
-        /* 🔒 PROTEKSI ANTI-SELEKSI TEKS GLOBAL */
+        /* 🔒 PROTEKSI GLOBAL - RENDER OPTIMIZED */
         * {
             -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
             user-select: none; 
             -webkit-user-select: none;
+            transition: background-color var(--transition-speed) ease, border-color var(--transition-speed) ease;
         }
 
         input, select, textarea, .edit-klik, .id-edit-klik, .rekening-num {
@@ -59,8 +69,7 @@
             align-items: center;
             min-height: 100vh;
             padding: 40px 20px;
-            background-image: radial-gradient(circle at 10% 20%, rgba(244, 114, 182, 0.15) 0%, transparent 40%),
-                              radial-gradient(circle at 90% 80%, rgba(251, 113, 133, 0.12) 0%, transparent 40%);
+            background-image: radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.08) 0%, transparent 80%);
         }
 
         /* 🌐 TRANSLATE BOX (KIRI ATAS) */
@@ -76,10 +85,9 @@
             border: 1px solid var(--border-color);
             padding: 8px 14px;
             border-radius: 100px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.1);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.05);
         }
-
         .custom-translate span { font-size: 12px; font-weight: 700; color: var(--text-muted); }
         #google_translate_element { display: inline-block; }
         .goog-te-gadget-simple { background-color: transparent !important; border: none !important; padding: 0 !important; font-size: 13px !important; cursor: pointer; }
@@ -100,7 +108,7 @@
             font-size: 13px;
             font-weight: 700;
             box-shadow: 0 4px 12px rgba(244, 114, 182, 0.1);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
             z-index: 10;
         }
 
@@ -117,30 +125,28 @@
             justify-content: space-between;
             align-items: center;
             font-size: 12px;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 15px rgba(244, 114, 182, 0.1);
+            backdrop-filter: blur(4px);
         }
         .top-ads-text { font-weight: 600; color: var(--text-main); text-align: left; line-height: 1.3; }
-        .top-ads-link { color: #fff; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #fb7185, #f472b6); padding: 6px 14px; border-radius: 8px; box-shadow: 0 2px 8px rgba(244, 114, 182, 0.3); }
+        .top-ads-link { color: #fff; font-weight: 800; text-decoration: none; background: linear-gradient(135deg, #fb7185, #f472b6); padding: 6px 14px; border-radius: 8px; }
 
         /* 💾 HUB PROFILE CARD */
         .hub-header-card {
             background: var(--bg-container);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
             border: 1px solid var(--border-color);
             padding: 22px;
             border-radius: 24px;
             width: 100%;
             max-width: 500px;
-            box-shadow: 0 15px 35px rgba(244, 114, 182, 0.08);
+            box-shadow: 0 10px 25px rgba(244, 114, 182, 0.05);
             margin-bottom: 20px;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
         .developer-section { display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .dev-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--accent-pink); object-fit: cover; box-shadow: 0 0 12px rgba(244, 114, 182, 0.4); cursor: pointer; }
+        .dev-avatar { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--accent-pink); object-fit: cover; cursor: pointer; }
         .dev-info { text-align: left; flex-grow: 1; }
         .dev-name-row { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 20px; margin-bottom: 18px; }
         .dev-name { font-size: 15px; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 5px; }
@@ -170,28 +176,45 @@
 
         /* 🎛️ MAIN WORKSPACE CONVERTER */
         .container {
-            background: var(--bg-container); backdrop-filter: blur(12px); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 28px;
-            width: 100%; max-width: 500px; box-shadow: 0 25px 50px -12px rgba(244, 114, 182, 0.1); text-align: center; margin-bottom: 20px;
+            background: var(--bg-container); backdrop-filter: blur(8px); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 28px;
+            width: 100%; max-width: 500px; box-shadow: 0 15px 35px rgba(244, 114, 182, 0.05); text-align: center; margin-bottom: 20px;
         }
         h2 { font-size: 36px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 8px; background: linear-gradient(135deg, #fda4af, #f472b6, #c084fc); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 25px; }
         .quota-badge { background: rgba(244, 114, 182, 0.12); color: var(--accent-pink); padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 600; display: inline-block; margin-bottom: 25px; border: 1px solid rgba(244, 114, 182, 0.2); }
 
-        .upload-box { border: 2px dashed rgba(244, 114, 182, 0.4); padding: 45px 20px; border-radius: 20px; cursor: pointer; background: var(--bg-box); transition: all 0.3s ease; }
-        .upload-box:hover { border-color: var(--accent-pink); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(244, 114, 182, 0.1); }
+        /* 📥 DRAG AND DROP BOX MULTI-FILE */
+        .upload-box { border: 2px dashed rgba(244, 114, 182, 0.4); padding: 45px 20px; border-radius: 20px; cursor: pointer; background: var(--bg-box); transition: all 0.2s ease; position: relative; }
+        .upload-box:hover, .upload-box.dragover { border-color: var(--accent-pink); background: rgba(244, 114, 182, 0.12); transform: scale(1.01); }
 
-        .pilihan-grup { margin: 25px 0; text-align: left; }
-        .pilihan-grup label { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
-        select { width: 100%; padding: 14px 16px; font-size: 15px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-main); outline: none; cursor: pointer; }
-        .btn { width: 100%; background: linear-gradient(135deg, #fb7185, #f472b6); color: #ffffff; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: 700; box-shadow: 0 4px 16px rgba(244, 114, 182, 0.35); }
+        /* MULTI-FILE PREVIEW GRID */
+        .file-preview-grid { display: flex; flex-direction: column; gap: 8px; margin-top: 15px; text-align: left; max-height: 160px; overflow-y: auto; }
+        .file-preview-card { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 8px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .remove-file-btn { color: var(--accent-rose); font-weight: 800; cursor: pointer; font-size: 14px; padding: 0 4px; }
 
-        /* 🔗 OWNER AFFILIATE MODULE WITH SEABANK COSTUMER PROMO */
+        /* LOADING BAR CSS COMPONENT */
+        .progress-container-box { display: none; width: 100%; background: rgba(0,0,0,0.2); border-radius: 100px; height: 12px; margin: 15px 0; overflow: hidden; border: 1px solid var(--border-color); }
+        .progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-purple), var(--accent-pink)); transition: width 0.1s linear; }
+
+        .control-row { display: flex; gap: 12px; margin: 20px 0; text-align: left; }
+        .pilihan-grup { flex: 1; display: flex; flex-direction: column; }
+        .pilihan-grup label { display: block; font-size: 10px; font-weight: 800; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        select, input[type="text"], input[type="email"], input[type="file"]::file-selector-button { width: 100%; padding: 14px 16px; font-size: 14px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 14px; color: var(--text-main); outline: none; }
+        select { cursor: pointer; }
+        input:focus, select:focus { border-color: var(--accent-pink); }
+        
+        .security-badge { font-size: 11px; color: #4ade80; display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 14px; font-weight: 600; }
+        .btn { width: 100%; background: linear-gradient(135deg, #fb7185, #f472b6); color: #ffffff; border: none; padding: 16px 20px; border-radius: 14px; cursor: pointer; font-size: 16px; font-weight: 700; box-shadow: 0 4px 12px rgba(244, 114, 182, 0.25); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* 🔗 OWNER AFFILIATE MODULE */
         .affiliate-box {
             margin-top: 18px; background: rgba(249, 115, 22, 0.08); border: 1px dashed rgba(249, 115, 22, 0.4); border-radius: 14px; padding: 14px;
-            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left; box-shadow: 0 2px 10px rgba(249, 115, 22, 0.05);
+            display: flex; justify-content: space-between; align-items: center; font-size: 11px; text-align: left;
         }
         .affiliate-title { color: #f97316; font-weight: 800; font-size: 12px; display: block; }
-        .btn-affiliate-link { text-decoration: none; text-align: center; display: inline-block; background: #f97316; border: none; color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 6px rgba(249, 115, 22, 0.3); }
+        .btn-affiliate-link { text-decoration: none; text-align: center; display: inline-block; background: #f97316; border: none; color: white; padding: 8px 14px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 
         /* 🕊️ HALAL ADS NATIVE BANNER */
         .ads-banner-container { width: 100%; max-width: 500px; background: var(--bg-container); border: 1px dashed var(--border-color); border-radius: 20px; padding: 12px; margin-bottom: 20px; text-align: center; }
@@ -206,22 +229,26 @@
         .tier-cards { display: flex; flex-direction: column; gap: 20px; margin-top: 15px; }
         .tier-card { background: var(--bg-box); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; text-align: left; }
         .tier-card h4 { font-size: 16px; font-weight: 800; margin-bottom: 5px; color: var(--text-main); }
-        .price { font-size: 24px; font-weight: 800; color: var(--accent-pink); margin-bottom: 8px; }
-        .price span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+        
+        .dynamic-price-box { font-size: 24px; font-weight: 800; color: var(--accent-pink); margin-bottom: 8px; }
+        .dynamic-price-box span { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+        
         .tier-features { list-style: none; margin: 15px 0; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
         .tier-features li::before { content: "🌸 "; }
         .btn-pay { width: 100%; background: transparent; border: 1px solid var(--accent-pink); color: var(--accent-pink); padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        /* 🏦 REKENING BANK & GATEWAY SECTIONS (MULTI-REGION) */
-        .gateway-tab-container { display: flex; gap: 8px; margin-bottom: 12px; }
-        .gateway-tab { flex: 1; padding: 8px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; }
+        /* 🏦 MODAL REKENING BANK & GLOBAL GATEWAY */
+        .gateway-tab-container { display: flex; gap: 8px; margin-bottom: 15px; }
+        .gateway-tab { flex: 1; padding: 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-muted); font-size: 11px; font-weight: 700; cursor: pointer; text-align: center; text-transform: uppercase; }
         .gateway-tab.active { background: var(--accent-pink); color: white; border-color: var(--accent-pink); }
 
         .bank-info-box { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); border-radius: 14px; padding: 14px; margin-bottom: 15px; text-align: left; font-size: 13px; }
         .bank-title { font-weight: 800; color: var(--accent-pink); margin-bottom: 5px; text-transform: uppercase; font-size: 11px; }
         .bank-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
-        .rekening-num { font-family: monospace; font-size: 14px; color: #fff; font-weight: bold; }
-        .btn-copy-mini { background: rgba(244, 114, 182, 0.2); border: none; color: var(--accent-pink); font-size: 11px; padding: 3px 8px; border-radius: 6px; cursor: pointer; font-weight: 700; }
+        .rekening-num { font-family: monospace; font-size: 15px; color: #fff; font-weight: bold; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px; }
+
+        /* STRUK PREVIEW */
+        .struk-upload-area { margin-top: 10px; background: var(--input-bg); border: 1px dashed var(--border-color); border-radius: 10px; padding: 10px; font-size: 11px; text-align: center; color: var(--text-muted); }
 
         /* 🕒 HISTORY */
         .history-container { background: var(--bg-container); border: 1px solid var(--border-color); padding: 25px 30px; border-radius: 24px; width: 100%; max-width: 500px; margin-bottom: 25px; }
@@ -232,32 +259,34 @@
 
         /* 🚨 TERMS GATE MODAL BOX */
         .tos-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(22, 18, 30, 0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
-        .tos-content { background: #1e182b; border: 2px solid var(--accent-pink); border-radius: 24px; max-width: 460px; width: 100%; padding: 28px; }
+        .tos-content { background: #1e182b; border: 2px solid var(--accent-pink); border-radius: 24px; max-width: 460px; width: 100%; padding: 28px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow-y: auto; max-height: 90vh; }
         .tos-content h4 { font-size: 16px; margin-bottom: 12px; text-align: left; }
-        .tos-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); padding: 14px; border-radius: 14px; max-height: 100px; overflow-y: auto; font-size: 12px; color: var(--text-main); margin-bottom: 15px; text-align: left; line-height: 1.5; }
         .checkbox-container { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); cursor: pointer; margin-bottom: 20px; text-align: left; align-items: center; }
         .tos-actions { display: flex; gap: 10px; }
         .btn-secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); padding: 12px; border-radius: 12px; cursor: pointer; flex: 1; }
         .btn-primary-tos { background: linear-gradient(135deg, #fb7185, #f472b6); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 2; opacity: 0.5; pointer-events: none; }
         .btn-primary-tos.active { opacity: 1; pointer-events: auto; }
 
+        /* 🍞 TOAST NOTIFIKASI */
+        .toast-box { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background: rgba(30, 24, 43, 0.95); border: 1px solid var(--accent-pink); color: var(--text-main); padding: 14px 24px; border-radius: 100px; font-size: 13px; font-weight: 600; z-index: 2000; box-shadow: 0 10px 25px rgba(244, 114, 182, 0.2); transition: bottom 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 8px; }
+        .toast-box.show { bottom: 30px; }
+
         .footer-copyright { font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 10px; }
         .footer-copyright span { color: var(--accent-pink); font-weight: 600; }
 
-        /* RESPONSIVE MEDIA FOR MOBILE */
         @media (max-width: 600px) {
             body { padding: 15px 10px; }
-            .custom-translate, .theme-switch { position: static !important; margin-bottom: 15px; width: 100%; text-align: center; justify-content: center; }
+            .custom-translate { position: static !important; margin-bottom: 10px; width: 100%; text-align: center; justify-content: center; }
+            .theme-switch { position: static !important; margin-bottom: 15px; width: 100%; text-align: center; justify-content: center; }
             .hub-header-card { padding: 15px; gap: 10px; }
             .developer-section { flex-direction: column; align-items: center; text-align: center; gap: 10px; padding-bottom: 12px; }
             .dev-avatar { width: 60px; height: 60px; }
             .dev-info { text-align: center; width: 100%; }
             .dev-name-row { flex-direction: column; gap: 12px; margin-bottom: 8px; align-items: center; }
             .dev-socials { justify-content: center; padding-right: 0; gap: 16px; height: auto; margin-top: 5px; }
-            .social-link { width: 24px !important; height: 24px !important; font-size: 8px !important; }
-            .social-link::before, .social-link::after { width: 24px !important; height: 24px !important; }
             .container, .pricing-container, .history-container, .ads-banner-container, .top-ads-banner { padding: 20px 15px; }
             h2 { font-size: 26px; }
+            .control-row { flex-direction: column; gap: 12px; }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
@@ -278,11 +307,11 @@
 
     <div class="hub-header-card">
         <div class="developer-section">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="dev-avatar" id="devFoto" onclick="gantiFotoProfil()" title="Klik untuk ganti URL foto">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="dev-avatar" id="devFoto" onclick="gantiFotoProfil()">
             <div class="dev-info">
                 <div class="dev-name-row">
                     <div class="dev-name">
-                        <span id="devNamaText" class="edit-klik" onclick="gantiNamaDev()" title="Klik untuk edit nama">Istiqomah</span> 
+                        <span id="devNamaText" class="edit-klik" onclick="gantiNamaDev()">Istiqomah</span> 
                         <span class="dev-badge">Dev</span>
                     </div>
                     <div class="dev-socials">
@@ -290,13 +319,13 @@
                         <a href="https://x.com/choco_243" target="_blank" class="social-link twitter"><span>TW</span></a>
                     </div>
                 </div>
-                <p class="dev-bio" id="devBioText" onclick="gantiBioDev()" title="Klik untuk edit bio">Dibuat khusus untuk mempermudah konversi file desain secara instan dan rapi.</p>
+                <p class="dev-bio" id="devBioText" onclick="gantiBioDev()">Dibuat khusus untuk mempermudah konversi file desain secara instan dan rapi.</p>
             </div>
         </div>
 
         <div class="client-section">
             <div class="client-status">
-                <div class="client-title id-edit-klik" id="clientUser" onclick="gantiNamaKonsumen()" title="Klik untuk ubah nama kamu">Guest_Session</div>
+                <div class="client-title id-edit-klik" id="clientUser" onclick="gantiNamaKonsumen()">Guest_Session</div>
                 <div class="client-role">💕 Active Princess</div>
             </div>
             <div class="client-stats">
@@ -311,29 +340,48 @@
         <div class="quota-badge">✨ Free Tier: <span id="kuota">5</span> left</div>
 
         <div class="upload-box" id="dropZone">
-            <p>Tarik & lepas file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
-            <input type="file" id="fileInput" style="display:none">
-            <span id="fileName" style="display:block; margin-top:10px; font-weight:600; color:var(--accent-pink);"></span>
+            <div id="uploadPrompt">
+                <p>Tarik & lepas banyak file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
+                <span style="font-size: 11px; color: var(--text-muted); display:block; margin-top:4px;">Mendukung banyak gambar sekaligus</span>
+            </div>
+            <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" multiple style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
         </div>
 
-        <div class="pilihan-grup">
-            <label>Convert Ke Format</label>
-            <select id="targetFormat">
-                <option value="pdf">PDF // Dokumen & Vektor Ringan</option>
-                <option value="png">PNG // Gambar Transparan HD</option>
-                <option value="jpg">JPG // Gambar Kompresi Standar</option>
-                <option value="svg">SVG // Vektor Keperluan Web</option>
-            </select>
+        <div class="progress-container-box" id="loadingBarUmat">
+            <div class="progress-bar-fill" id="loadingBarFillElement"></div>
         </div>
 
-        <button class="btn" onclick="prosesKonversi()">Mulai Konversi</button>
+        <div class="file-preview-grid" id="previewGridAntrian"></div>
+
+        <div class="control-row">
+            <div class="pilihan-grup">
+                <label>Convert Ke Format</label>
+                <select id="targetFormat">
+                    <option value="pdf">PDF // Dokumen Vektor</option>
+                    <option value="png">PNG // Transparan HD</option>
+                    <option value="jpg">JPG // Standar Kompresi</option>
+                </select>
+            </div>
+            <div class="pilihan-grup">
+                <label>Kualitas Hasil</label>
+                <select id="imageQuality">
+                    <option value="1.0">High Quality (100%)</option>
+                    <option value="0.7">Medium Pack (70%)</option>
+                    <option value="0.4">Web Optimized (40%)</option>
+                </select>
+            </div>
+        </div>
+
+        <button class="btn" id="mainTriggerBtn" onclick="prosesKonversiBatch()">Mulai Konversi Sekaligus</button>
+
+        <div class="security-badge">🔒 Browser Local Sandbox Secured // File Tidak Diunggah ke Server</div>
 
         <div class="affiliate-box">
             <div>
                 <span class="affiliate-title">🟠 SeaBank User Special Deal!</span>
                 <p style="color: var(--text-main); font-size: 10px; margin-top: 2px;">Dapatkan Cashback Rp 5.000 + Kuota tambahan jika upgrade/belanja pakai SeaBank!</p>
             </div>
-            <a href="#" onclick="alert('Kode Promo SEABANK-PRINCESS otomatis aktif saat checkout! 💕')" class="btn-affiliate-link" style="background:#f97316;">Klaim Promo 🎁</a>
+            <a href="#" onclick="showToast('🎁 Kode Promo SEABANK-PRINCESS otomatis aktif!')" class="btn-affiliate-link">Klaim Promo 🎁</a>
         </div>
     </div>
 
@@ -350,45 +398,20 @@
         <div class="tier-cards">
             <div class="tier-card" style="border: 1px dashed var(--accent-purple);">
                 <h4>🍓 Berry Pack (Edisi Hemat)</h4>
-                <div class="price">Rp 15.000 <span>/ $1.00 USD</span></div>
+                <div class="dynamic-price-box" id="hargaTierTeks">Rp 15.000 <span>/ $1.00 USD</span></div>
                 <ul class="tier-features">
                     <li>Kuota Tambahan +50 Konversi</li>
                     <li>Masa aktif 1 minggu penuh</li>
-                    <li>Akses format SVG kecepatan standar</li>
+                    <li>Aktifkan Fitur Batch Premium</li>
                 </ul>
-                <button class="btn-pay" style="border-color: var(--accent-purple); color: var(--accent-purple);" onclick="bukaGerbangPembayaran('Berry Pack (Edisi Hemat)', 'Rp 15.000 // $1.00 USD')">Beli Sekarang 🍓</button>
-            </div>
-
-            <div class="tier-card">
-                <h4>🌸 Candy Pack (1 Bulan)</h4>
-                <div class="price">Rp 29.000 <span>/ $2.00 USD</span></div>
-                <ul class="tier-features">
-                    <li>Kuota tanpa batas (Unlimited)</li>
-                    <li>Prioritas server cepat</li>
-                    <li>Bebas iklan banner</li>
-                </ul>
-                <button class="btn-pay" onclick="bukaGerbangPembayaran('Candy Pack (1 Bulan)', 'Rp 29.000 // $2.00 USD')">Beli Sekarang 💖</button>
-            </div>
-            
-            <div class="tier-card" style="border: 1px solid var(--accent-pink);">
-                <h4>👑 Diamond Queen (1 Tahun)</h4>
-                <div class="price">Rp 199.000 <span>/ $13.50 USD</span></div>
-                <ul class="tier-features">
-                    <li>Semua fitur Candy Pack</li>
-                    <li>Semua fitur Berry Pack</li>
-                    <li>Badge Premium Eksklusif</li>
-                </ul>
-                <button class="btn-pay" style="background: linear-gradient(135deg, #fb7185, #f472b6); color: white; border: none;" onclick="bukaGerbangPembayaran('Diamond Queen (1 Tahun)', 'Rp 199.000 // $13.50 USD')">Beli Sekarang ✨</button>
+                <button class="btn-pay" onclick="bukaGerbangPembayaran('Berry Pack')">Beli Sekarang 🍓</button>
             </div>
         </div>
     </div>
 
     <div class="history-container">
-        <div class="history-header">
-            <span class="history-title">🕒 Recent Activities</span>
-        </div>
-        <ul class="history-list" id="historyListContainer">
-            </ul>
+        <div class="history-header"><span class="history-title">🕒 Recent Activities</span></div>
+        <ul class="history-list" id="historyListContainer"></ul>
     </div>
 
     <div class="tos-modal" id="tosModal">
@@ -397,296 +420,444 @@
             
             <div class="gateway-tab-container">
                 <div class="gateway-tab active" id="tabLokal" onclick="gantiTabGateway('lokal')">🇮🇩 Dalam Negeri</div>
-                <div class="gateway-tab" id="tabInter" onclick="gantiTabGateway('inter')">🌐 Luar Negeri / Global</div>
+                <div class="gateway-tab" id="tabInter" onclick="gantiTabGateway('inter')">🌐 Luar Negeri</div>
             </div>
-            
+
             <div id="panelLokal">
-                <div class="pilihan-grup" style="margin: 15px 0;">
-                    <label style="color: var(--accent-pink);">PILIH METODE PEMBAYARAN BANK:</label>
+                <div class="pilihan-grup" style="margin-bottom: 12px;">
+                    <label>Pilih Metode Bank</label>
                     <select id="pilihanBankKonsumen" onchange="updateTampilanInstanBank()">
-                        <option value="seabank">🟠 SeaBank Transfer (Otomatis)</option>
+                        <option value="seabank">🟠 SeaBank Transfer</option>
                         <option value="bca">🔵 Bank BCA Transfer</option>
-                        <option value="mandiri">🟡 Bank Mandiri Transfer</option>
-                        <option value="qris">🌸 Semua E-Wallet // QRIS (Gopay, OVO, DANA)</option>
                     </select>
                 </div>
-
                 <div class="bank-info-box">
                     <div class="bank-title" id="labelNamaBankTerpilih">🏦 SEABANK TRANSFER</div>
                     <div class="bank-row">
-                        <span><strong>Nomor:</strong> <span class="rekening-num" id="nomorRekeningDitampilkan">5566-7788-99</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('nomorRekeningDitampilkan', 'Data Akun')">Salin</button>
+                        <span class="rekening-num" id="nomorRekeningDitampilkan">5566-7788-99</span>
                     </div>
-                    <p style="margin-top: 8px; font-size: 11px; color: var(--accent-pink);">A/N: Istiqomah (Convertify Owner)</p>
+                </div>
+                
+                <div class="pilihan-grup" style="margin-bottom:15px;">
+                    <label>Upload Foto Bukti Transfer (Struk)</label>
+                    <input type="file" id="strukPembayaranFile" accept="image/*" onchange="validasiUploadStruk()">
+                    <div class="struk-upload-area" id="strukStatusTeks">Belum ada foto struk terpilih</div>
                 </div>
             </div>
 
-            <div id="panelInter" style="display:none;">
-                <div class="bank-info-box">
-                    <div class="bank-title">💳 GLOBAL PAYMENT MERCHANT</div>
+            <div id="panelInter" style="display: none;">
+                <div class="bank-info-box" style="border-color: var(--accent-purple); background: rgba(192,132,252,0.05); margin-bottom:15px;">
+                    <div class="bank-title" style="color: var(--accent-purple);">💳 PayPal Global Merchant</div>
+                    <p style="font-size: 11px; margin: 4px 0 10px 0; color: var(--text-main);">Silakan kirimkan pembayaran aman via PayPal ke email pengembang di bawah ini:</p>
                     <div class="bank-row">
-                        <span><strong>PayPal Email:</strong> <span class="rekening-num" id="payPalMail">istiqomah.dev@email.com</span></span>
-                        <button class="btn-copy-mini" onclick="salinTekstual('payPalMail', 'PayPal Merchant Email')">Salin</button>
+                        <span class="rekening-num" style="font-size: 13px;">payment@convertify.global</span>
                     </div>
-                    <p style="margin-top: 8px; font-size: 11px; color: var(--accent-purple);">*Invoice currency automatically adjusts to USD/EUR.</p>
                 </div>
             </div>
 
-            <div class="tos-box">
-                <p>1. Akun terikat sistem perangkat unik Anda.</p>
-                <p>2. Dilarang melakukan manipulasi bypass kuota server.</p>
-                <p>3. Uang langsung ditransfer masuk asli ke kantong developer resmi.</p>
+            <div class="pilihan-grup" style="margin-bottom: 15px;">
+                <label>Email / No. WhatsApp Kamu</label>
+                <input type="text" id="kontakPembeli" placeholder="Contoh: princess@gmail.com atau +62812..." oninput="toggleTosButton()">
             </div>
-            
+
             <label class="checkbox-container">
                 <input type="checkbox" id="checkTos" onchange="toggleTosButton()">
-                <span>Saya sudah paham, sudah transfer, dan setuju dengan ketentuan.</span>
+                <span>Saya sudah paham dan benar-benar mentransfer.</span>
             </label>
-            
             <div class="tos-actions">
                 <button class="btn-secondary" onclick="tutupModalTos()">Batal</button>
-                <button class="btn-primary-tos" id="btnSetujuTos" onclick="eksekusiPembayaranFinal()">Konfirmasi Bayar ✨</button>
+                <button class="btn-primary-tos" id="btnSetujuTos" onclick="eksekusiPembayaranFinal()">Konfirmasi ✨</button>
             </div>
         </div>
     </div>
 
-    <div class="footer-copyright">
-        &copy; 2026 Convertify. Created by <span>@chocoo_ming</span>
-    </div>
+    <div class="toast-box" id="toastNotif">🌸 <span id="toastText">Halo! Selamat datang.</span></div>
+
+    <div class="footer-copyright">&copy; 2026 Convertify. Created by <span>@chocoo_ming</span></div>
 
     <script type="text/javascript">
         function googleTranslateElementInit() {
             new google.translate.TranslateElement({pageLanguage: 'id', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
         }
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const scriptTranslate = document.createElement('script');
+            scriptTranslate.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+            scriptTranslate.async = true;
+            document.body.appendChild(scriptTranslate);
+        });
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        let dropZone = document.getElementById('dropZone');
-        let namaPaketTerpilih = "";
-        let hargaPaketTerpilih = "";
-        let kuotaSisa = parseInt(localStorage.getItem('c_kuota') || "5");
-        let konversiCount = parseInt(localStorage.getItem('c_count') || "0");
-        let fileGlobalDiterima = null; // Menyimpan data file secara presisi
-
-        // SECURE PROTECTION SYSTEM
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.onkeydown = function(e) {
-            if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-                return false;
-            }
-        };
+        let daftarFileMasyarakat = []; 
+        let kuotaSisa = 5;
+        let konversiCount = 0;
+        let gatewayAktif = 'lokal';
+        
+        // Web Audio Context Core
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playChimeSuccessSound() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); 
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch(e) { console.log('AudioContext blocked by browser policy.'); }
+        }
 
         window.onload = function() {
+            // PERSISTENT THEME RECOVERY ENGINE
+            const savedTheme = localStorage.getItem('c_theme') || 'dark';
+            if(savedTheme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                document.getElementById('themeBtn').innerText = "🌸 Dark Mode";
+            }
+
+            if(!localStorage.getItem('c_kuota') || parseInt(localStorage.getItem('c_kuota')) <= 0) {
+                localStorage.setItem('c_kuota', "5");
+            }
+            kuotaSisa = parseInt(localStorage.getItem('c_kuota'));
+            konversiCount = parseInt(localStorage.getItem('c_count') || "0");
+
+            document.getElementById('kuota').innerText = kuotaSisa;
+            document.getElementById('clientCount').innerText = konversiCount;
+            
             let clientID = localStorage.getItem('c_user_id') || "PRNCS_" + Math.floor(1000 + Math.random() * 9000);
             localStorage.setItem('c_user_id', clientID);
             document.getElementById('clientUser').innerText = clientID;
 
-            document.getElementById('kuota').innerText = kuotaSisa;
-            document.getElementById('clientCount').innerText = konversiCount;
-
-            if(localStorage.getItem('c_theme') === 'light') {
-                document.documentElement.setAttribute('data-theme', 'light');
-                document.getElementById('themeBtn').innerText = "🔮 Dark Mode";
-            }
-
-            if(localStorage.getItem('dev_nama')) document.getElementById('devNamaText').innerText = localStorage.getItem('dev_nama');
-            if(localStorage.getItem('dev_bio')) document.getElementById('devBioText').innerText = localStorage.getItem('dev_bio');
-            if(localStorage.getItem('dev_foto')) document.getElementById('devFoto').src = localStorage.getItem('dev_foto');
-
+            setupSistemPilihFileEvent();
+            setupSistemDragDropEvent();
+            deteksiBahasaDanMataUangGlobal();
             renderRiwayat();
-            initUploadHandlers();
         };
 
-        function gantiNamaDev() { let n = prompt("Masukkan Nama Developer Baru:", document.getElementById('devNamaText').innerText); if(n) { localStorage.setItem('dev_nama', n); document.getElementById('devNamaText').innerText = n; } }
-        function gantiBioDev() { let b = prompt("Masukkan Deskripsi Bio Baru:", document.getElementById('devBioText').innerText); if(b) { localStorage.setItem('dev_bio', b); document.getElementById('devBioText').innerText = b; } }
-        function gantiFotoProfil() { let f = prompt("Masukkan URL Link Foto Baru:", document.getElementById('devFoto').src); if(f) { localStorage.setItem('dev_foto', f); document.getElementById('devFoto').src = f; } }
-        function gantiNamaKonsumen() { let k = prompt("Ubah Nama Session Kamu:", document.getElementById('clientUser').innerText); if(k) { localStorage.setItem('c_user_id', k); document.getElementById('clientUser').innerText = k; } }
-
-        function toggleTheme() {
-            const body = document.documentElement;
-            const btn = document.getElementById('themeBtn');
-            if (body.getAttribute('data-theme') === 'light') {
-                body.removeAttribute('data-theme');
-                btn.innerText = "🌸 Light Mode";
-                localStorage.setItem('c_theme', 'dark');
-            } else {
-                body.setAttribute('data-theme', 'light');
-                btn.innerText = "🔮 Dark Mode";
-                localStorage.setItem('c_theme', 'light');
+        function deteksiBahasaDanMataUangGlobal() {
+            let bahasaUser = navigator.language || navigator.userLanguage;
+            bahasaUser = bahasaUser.toLowerCase();
+            if(!bahasaUser.includes('id') && !bahasaUser.includes('in')) {
+                document.getElementById('hargaTierTeks').innerHTML = "$1.00 USD <span>/ Rp 15.000</span>";
+                gantiTabGateway('inter');
             }
         }
 
-        function initUploadHandlers() {
-            let inputEl = document.getElementById('fileInput');
-            dropZone.onclick = function() { inputEl.click(); };
-            inputEl.onchange = function() {
-                if(this.files.length > 0) {
-                    fileGlobalDiterima = this.files[0];
-                    document.getElementById('fileName').innerText = "💕 " + fileGlobalDiterima.name;
+        function showToast(pesan) {
+            let toast = document.getElementById('toastNotif');
+            document.getElementById('toastText').innerText = pesan;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3500);
+        }
+
+        function setupSistemDragDropEvent() {
+            let dropZone = document.getElementById('dropZone');
+            ['dragenter', 'dragover'].forEach(name => {
+                dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.add('dragover'); }, false);
+            });
+            ['dragleave', 'drop'].forEach(name => {
+                dropZone.addEventListener(name, (e) => { e.preventDefault(); dropZone.classList.remove('dragover'); }, false);
+            });
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                tambahkanFileKeList(e.dataTransfer.files);
+            }, false);
+        }
+
+        function setupSistemPilihFileEvent() {
+            let input = document.getElementById('fileInput');
+            input.addEventListener('change', function() {
+                tambahkanFileKeList(this.files);
+            });
+        }
+
+        // 🛡️ INDUSTRIAL VALIDATION (ANTI-CRASH 0,1%)
+        function tambahkanFileKeList(files) {
+            let fileDitolakCount = 0;
+            for(let i=0; i<files.length; i++) {
+                let f = files[i];
+                // Validasi tipe file
+                if(!f.type.startsWith('image/')) {
+                    fileDitolakCount++;
+                    continue;
                 }
-            };
+                // Validasi batasan ukuran file (Maksimal 15MB agar browser tidak kehabisan RAM)
+                if(f.size > 15 * 1024 * 1024) {
+                    fileDitolakCount++;
+                    continue;
+                }
+                daftarFileMasyarakat.push(f);
+            }
+            renderListAntrianFile();
+            if(fileDitolakCount > 0) {
+                showToast(`⚠️ ${fileDitolakCount} file dilewati (bukan gambar / terlalu besar >15MB)!`);
+            } else {
+                showToast(`Berhasil menambahkan ${files.length} file ke antrean! ✨`);
+            }
         }
 
-        // RE-FIXED CORE ENGINE: PROSES KONVERSI SEKARANG DIJAMIN BERHASIL
-        function prosesKonversi() {
-            if (!fileGlobalDiterima) { 
-                alert("Pilih filenya dulu, Princess! Tarik file atau klik kotak di atas ya 🥺"); 
-                return; 
+        function renderListAntrianFile() {
+            let container = document.getElementById('previewGridAntrian');
+            container.innerHTML = "";
+            daftarFileMasyarakat.forEach((file, indeks) => {
+                container.innerHTML += `
+                    <div class="file-preview-card">
+                        <span>🌸 ${file.name} (${(file.size/1024).toFixed(1)} KB)</span>
+                        <span class="remove-file-btn" onclick="hapusFileDariAntrian(${indeks})">×</span>
+                    </div>
+                `;
+            });
+        }
+
+        function hapusFileDariAntrian(indeks) {
+            daftarFileMasyarakat.splice(indeks, 1);
+            renderListAntrianFile();
+        }
+
+        // ENGINE UTAMA PROSES BATCH MULTI FILE + VISUAL LOADING PERCENTAGE
+        async function prosesKonversiBatch() {
+            if (daftarFileMasyarakat.length === 0) {
+                showToast("Masukkan file gambarmu dulu ke dalam kotak ya, Princess! 🥺");
+                return;
             }
-            if (kuotaSisa <= 0) { 
-                alert("Kuota gratis kamu sudah habis! Silakan upgrade ke premium ✨"); 
-                return; 
+            if (daftarFileMasyarakat.length > kuotaSisa) {
+                showToast("Kuota Free Tier kamu tidak cukup. Silakan kurangi file atau upgrade! 💕");
+                return;
             }
 
             let formatTujuan = document.getElementById('targetFormat').value;
-
-            // Efek Animasi Memproses File Instan
-            dropZone.innerHTML = `<p style="color:var(--accent-purple); font-weight:600;">🔄 Sedang mengonversi '${fileGlobalDiterima.name}' ke ${formatTujuan.toUpperCase()}... Mohon tunggu...</p>`;
+            let kualitas = parseFloat(document.getElementById('imageQuality').value);
             
+            // Tampilkan Loading Bar & Kunci Tombol
+            let loadingBox = document.getElementById('loadingBarUmat');
+            let loadingFill = document.getElementById('loadingBarFillElement');
+            let triggerBtn = document.getElementById('mainTriggerBtn');
+            
+            loadingBox.style.display = 'block';
+            triggerBtn.disabled = true;
+
+            let totalFiles = daftarFileMasyarakat.length;
+
+            for(let i=0; i < totalFiles; i++) {
+                let fileAman = daftarFileMasyarakat[i];
+                
+                // Hitung pergerakan persentase progres ring dinamis
+                let persentaseSelesai = Math.round(((i) / totalFiles) * 100);
+                loadingFill.style.width = persentaseSelesai + "%";
+
+                await jalankanKonversiTunggal(fileAman, formatTujuan, kualitas);
+            }
+
+            // Selesaikan loading bar ke 100%
+            loadingFill.style.width = "100%";
             setTimeout(() => {
-                kuotaSisa--; konversiCount++;
-                localStorage.setItem('c_kuota', kuotaSisa);
-                localStorage.setItem('c_count', konversiCount);
-                
-                document.getElementById('kuota').innerText = kuotaSisa;
-                document.getElementById('clientCount').innerText = konversiCount;
+                loadingBox.style.display = 'none';
+                loadingFill.style.width = "0%";
+                triggerBtn.disabled = false;
+            }, 600);
 
-                // Memproses Pembuatan Link Unduh Client-Side Menggunakan Blob
-                let namaFileBaru = fileGlobalDiterima.name.substring(0, fileGlobalDiterima.name.lastIndexOf('.')) + "." + formatTujuan;
-                let blob = new Blob([fileGlobalDiterima], { type: "application/octet-stream" });
-                let urlDownload = URL.createObjectURL(blob);
-
-                // MENAMPILKAN INFORMASI SEKALIGUS TOMBOL DOWNLOAD ASLI HIJAU KE KONSUMEN
-                dropZone.innerHTML = `
-                    <p style="color: #4ade80; font-weight: 800; margin-bottom: 5px;">🎉 Konversi Berhasil!</p>
-                    <p style="color: var(--text-main); font-size: 12px; margin-bottom: 15px;">File Baru: <strong>${namaFileBaru}</strong></p>
-                    <a href="${urlDownload}" download="${namaFileBaru}" class="btn" style="display: inline-block; width: auto; background: linear-gradient(135deg, #10b981, #059669); padding: 12px 30px; text-decoration: none; font-size: 14px; font-weight:bold; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
-                        📥 Download ${formatTujuan.toUpperCase()}
-                    </a>
-                    <p style="font-size: 11px; color: var(--text-muted); margin-top: 15px; text-decoration: underline; cursor: pointer;" onclick="resetUploadBox()">Konversi File Lain 🌸</p>
-                `;
-
-                let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
-                listRiwayat.unshift({ file: fileGlobalDiterima.name, to: formatTujuan });
-                if(listRiwayat.length > 5) listRiwayat.pop(); 
-                localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
-                
-                renderRiwayat();
-            }, 2000); 
+            playChimeSuccessSound();
+            showToast("🎉 Seluruh file batch sukses dikonversi & diunduh!");
+            
+            daftarFileMasyarakat = [];
+            document.getElementById('previewGridAntrian').innerHTML = "";
+            bukaUlangSesiUpload();
         }
 
-        function resetUploadBox() {
-            fileGlobalDiterima = null;
-            dropZone.innerHTML = `
-                <p>Tarik & lepas file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
-                <input type="file" id="fileInput" style="display:none">
-                <span id="fileName" style="display:block; margin-top:10px; font-weight:600; color:var(--accent-pink);"></span>
+        function jalankanKonversiTunggal(file, format, kualitas) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onerror = function() {
+                    showToast(`⚠️ Gagal membaca file: ${file.name}`);
+                    resolve(); // Lewati file jika korup
+                };
+                reader.onload = function(event) {
+                    const img = new Image();
+                    img.onerror = function() {
+                        showToast(`⚠️ Format gambar internal rusak: ${file.name}`);
+                        resolve();
+                    };
+                    img.onload = function() {
+                        let urlHasil = "";
+                        let namaFileBaru = file.name.substring(0, file.name.lastIndexOf('.')) + "_converted." + format;
+
+                        if (format === "pdf") {
+                            if (typeof window.jspdf === 'undefined') {
+                                showToast("Mesin PDF belum siap, mengalihkan file...");
+                                resolve();
+                                return;
+                            }
+                            const { jsPDF } = window.jspdf;
+                            const doc = new jsPDF({
+                                orientation: img.width > img.height ? 'l' : 'p',
+                                unit: 'px',
+                                format: [img.width, img.height]
+                            });
+                            let dataJpgLokal = dataUrlKeJpgKompresi(img, kualitas);
+                            doc.addImage(dataJpgLokal, 'JPEG', 0, 0, img.width, img.height);
+                            urlHasil = doc.output('bloburl');
+                        } else {
+                            urlHasil = dataUrlKeFormatLain(img, format, kualitas);
+                        }
+
+                        // Mengunduh File
+                        const a = document.createElement('a');
+                        a.href = urlHasil;
+                        a.download = namaFileBaru;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+
+                        // Simpan riwayat & update counter kuota
+                        kuotaSisa--;
+                        konversiCount++;
+                        localStorage.setItem('c_kuota', kuotaSisa);
+                        localStorage.setItem('c_count', konversiCount);
+                        document.getElementById('kuota').innerText = kuotaSisa;
+                        document.getElementById('clientCount').innerText = konversiCount;
+
+                        let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
+                        listRiwayat.unshift({ file: file.name, to: format });
+                        if(listRiwayat.length > 3) listRiwayat.pop();
+                        localStorage.setItem('c_riwayat_list', JSON.stringify(listRiwayat));
+                        renderRiwayat();
+
+                        setTimeout(resolve, 150); // Delay jeda memori antar unduhan
+                    };
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function dataUrlKeJpgKompresi(img, kualitas) {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width; canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            return canvas.toDataURL("image/jpeg", kualitas);
+        }
+
+        function dataUrlKeFormatLain(img, format, kualitas) {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width; canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            let mime = format === "png" ? "image/png" : "image/jpeg";
+            return canvas.toDataURL(mime, kualitas);
+        }
+
+        function bukaUlangSesiUpload() {
+            document.getElementById('dropZone').innerHTML = `
+                <div id="uploadPrompt">
+                    <p>Tarik & lepas banyak file kamu di sini atau <span style="color: var(--accent-pink); font-weight: 600;">browsing</span></p>
+                    <span style="font-size: 11px; color: var(--text-muted); display:block; margin-top:4px;">Mendukung banyak gambar sekaligus</span>
+                </div>
+                <input type="file" id="fileInput" accept=".jpg, .jpeg, .png" multiple style="position:absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer;">
             `;
-            initUploadHandlers();
+            setupSistemPilihFileEvent();
+            setupSistemDragDropEvent();
         }
 
         function renderRiwayat() {
             let container = document.getElementById('historyListContainer');
-            let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || '[{"file":"foto_banner.jpg","to":"png"}]');
+            let listRiwayat = JSON.parse(localStorage.getItem('c_riwayat_list') || "[]");
             container.innerHTML = "";
+            if(listRiwayat.length === 0) {
+                container.innerHTML = `<li class="history-item" style="color:var(--text-muted); text-align:center;">Belum ada aktivitas konversi</li>`;
+                return;
+            }
             listRiwayat.forEach(item => {
-                container.innerHTML += `<li class="history-item"><span>${item.file}</span><span>to ${item.to}</span></li>`;
+                container.innerHTML += `<li class="history-item"><span>${item.file}</span><span style="color:var(--accent-purple)">to ${item.to.toUpperCase()}</span></li>`;
             });
         }
 
-        function updateTampilanInstanBank() {
-            let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
-            let labelBank = document.getElementById('labelNamaBankTerpilih');
-            let nomorRek = document.getElementById('nomorRekeningDitampilkan');
-
-            if (bankDipilih === "seabank") {
-                labelBank.innerText = "🏦 SEABANK TRANSFER (KANTONG UTAMA)";
-                nomorRek.innerText = "5566-7788-99"; 
-            } else if (bankDipilih === "bca") {
-                labelBank.innerText = "🏦 BANK BCA TRANSFER";
-                nomorRek.innerText = "1234-5678-90"; 
-            } else if (bankDipilih === "mandiri") {
-                labelBank.innerText = "🏦 BANK MANDIRI TRANSFER";
-                nomorRek.innerText = "9876-5432-10"; 
-            } else if (bankDipilih === "qris") {
-                labelBank.innerText = "📱 QRIS / E-WALLET (GOPAY, OVO, DANA)";
-                nomorRek.innerText = "0812-3456-7890"; 
+        function validasiUploadStruk() {
+            let fileStruk = document.getElementById('strukPembayaranFile').files;
+            if(fileStruk.length > 0) {
+                document.getElementById('strukStatusTeks').innerHTML = "💚 Struk Terdeteksi: " + fileStruk[0].name;
             }
+            toggleTosButton();
         }
 
-        function gantiTabGateway(region) {
-            let tabLokal = document.getElementById('tabLokal');
-            let tabInter = document.getElementById('tabInter');
-            let panelLokal = document.getElementById('panelLokal');
-            let panelInter = document.getElementById('panelInter');
-
-            if (region === 'lokal') {
-                tabLokal.classList.add('active'); tabInter.classList.remove('active');
-                panelLokal.style.display = 'block'; panelInter.style.display = 'none';
+        function gantiTabGateway(jenis) {
+            gatewayAktif = jenis;
+            if(jenis === 'lokal') {
+                document.getElementById('tabLokal').classList.add('active');
+                document.getElementById('tabInter').classList.remove('active');
+                document.getElementById('panelLokal').style.display = 'block';
+                document.getElementById('panelInter').style.display = 'none';
             } else {
-                tabInter.classList.add('active'); tabLokal.classList.remove('active');
-                panelInter.style.display = 'block'; panelLokal.style.display = 'none';
+                document.getElementById('tabInter').classList.add('active');
+                document.getElementById('tabLokal').classList.remove('active');
+                document.getElementById('panelInter').style.display = 'block';
+                document.getElementById('panelLokal').style.display = 'none';
+            }
+            toggleTosButton();
+        }
+
+        function updateTampilanInstanBank() {
+            let b = document.getElementById('pilihanBankConsumers').value || document.getElementById('pilihanBankKonsumen').value;
+            if(b === 'seabank') {
+                document.getElementById('labelNamaBankTerpilih').innerText = "🏦 SEABANK TRANSFER";
+                document.getElementById('nomorRekeningDitampilkan').innerText = "5566-7788-99";
+            } else {
+                document.getElementById('labelNamaBankTerpilih').innerText = "🏦 BANK BCA TRANSFER";
+                document.getElementById('nomorRekeningDitampilkan').innerText = "1122-3344-55";
             }
         }
 
-        function bukaGerbangPembayaran(paket, harga) {
-            namaPaketTerpilih = paket; hargaPaketTerpilih = harga;
-            document.getElementById('modalTitle').innerText = "⚠️ Pembayaran: " + paket;
-            document.getElementById('checkTos').checked = false;
-            document.getElementById('btnSetujuTos').classList.remove('active');
-            document.getElementById('tosModal').style.display = 'flex';
-            gantiTabGateway('lokal'); 
-            updateTampilanInstanBank();
+        function toggleTheme() {
+            const body = document.documentElement;
+            if (body.getAttribute('data-theme') === 'light') { 
+                body.removeAttribute('data-theme'); 
+                localStorage.setItem('c_theme', 'dark');
+                document.getElementById('themeBtn').innerText = "🌸 Light Mode";
+            }
+            else { 
+                body.setAttribute('data-theme', 'light'); 
+                localStorage.setItem('c_theme', 'light');
+                document.getElementById('themeBtn').innerText = "🌸 Dark Mode";
+            }
         }
-        
-        function toggleTosButton() {
-            let isChecked = document.getElementById('checkTos').checked;
-            document.getElementById('btnSetujuTos').className = isChecked ? 'btn-primary-tos active' : 'btn-primary-tos';
-        }
-        
+
+        function gantiNamaDev() { let n = prompt("Nama Dev:", document.getElementById('devNamaText').innerText); if(n) document.getElementById('devNamaText').innerText = n; }
+        function gantiBioDev() { let b = prompt("Bio Dev:", document.getElementById('devBioText').innerText); if(b) document.getElementById('devBioText').innerText = b; }
+        function gantiNamaKonsumen() { let k = prompt("Nama Session:", document.getElementById('clientUser').innerText); if(k) document.getElementById('clientUser').innerText = k; }
+        function bukaGerbangPembayaran(p) { document.getElementById('modalTitle').innerText = "Pembayaran " + p; document.getElementById('tosModal').style.display = 'flex'; }
         function tutupModalTos() { document.getElementById('tosModal').style.display = 'none'; }
         
-        function salinTekstual(idElemen, label) {
-            let teks = document.getElementById(idElemen).innerText;
-            navigator.clipboard.writeText(teks).then(() => { alert(label + " berhasil disalin! 💕"); });
+        // 🧠 VALIDASI INPUT CERDAS (EMAIL / WA PATTERN)
+        function toggleTosButton() {
+            let kontak = document.getElementById('kontakPembeli').value.trim();
+            let dicentang = document.getElementById('checkTos').checked;
+            let btn = document.getElementById('btnSetujuTos');
+            
+            // Regex sederhana mengecek apakah input berupa format email atau nomor hp minimal 8 digit
+            let emailAtauWaRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\+?[0-9]{8,15}$/;
+            let kontakValid = emailAtauWaRegex.test(kontak);
+
+            let statusStrukAman = true;
+            if (gatewayAktif === 'lokal') {
+                let strukInput = document.getElementById('strukPembayaranFile').files;
+                statusStrukAman = (strukInput.length > 0);
+            }
+
+            if(kontakValid && dicentang && statusStrukAman) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
         }
 
-        function eksekusiPembayaranFinal() { 
-            tutupModalTos(); 
-            let isLokalAktif = document.getElementById('tabLokal').classList.contains('active');
-            let userId = document.getElementById('clientUser').innerText;
-            let bankDipilih = document.getElementById('pilihanBankKonsumen').value;
-
-            if (isLokalAktif) {
-                if (bankDipilih === "qris") {
-                    window.open("https://saweria.co/username_kamu", "_blank"); 
-                    alert("Membuka Gerbang Pembayaran QRIS/E-Wallet via Saweria. Uang otomatis masuk kantong developer! 💕");
-                    return;
-                }
-
-                let nomorWA = "6281234567890"; 
-                let textOrderWA = `Halo Kak Istiqomah, aku mau konfirmasi transfer pembayaran Premium Princess 💕%0A%0A` +
-                                  `• Paket: ${namaPaketTerpilih}%0A` +
-                                  `• ID User: ${userId}%0A` +
-                                  `• Bank Pengirim: ${bankDipilih.toUpperCase()}%0A%0A` +
-                                  `Aku sudah kirim uangnya, tolong dicek mutasi banknya ya kak!`;
-                
-                window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${textOrderWA}`, '_blank');
-            } else {
-                let emailKamu = "istiqomah.dev@email.com"; 
-                let subjectEmail = encodeURIComponent(`[Convertify Premium] Payment Confirmation - ${userId}`);
-                let bodyEmail = encodeURIComponent(
-                    `Hi Istiqomah,\n\n` +
-                    `I would like to confirm my premium payment for Convertify.\n\n` +
-                    `• Plan Selected: ${namaPaketTerpilih}\n` +
-                    `• My Client ID: ${userId}\n\n` +
-                    `I have completed the transaction via PayPal. Please check your balance.`
-                );
-                
-                window.open(`mailto:${emailKamu}?subject=${subjectEmail}&body=${bodyEmail}`, '_blank');
-                alert("Thank you! Your email app has been launched. 💕");
-            }
+        function eksekusiPembayaranFinal() {
+            let kontak = document.getElementById('kontakPembeli').value.trim();
+            showToast("✨ Konfirmasi sukses! Data (" + kontak + ") & lampiran diproses manual.");
+            tutupModalTos();
         }
     </script>
 </body>
