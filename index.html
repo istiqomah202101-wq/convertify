@@ -996,7 +996,11 @@
 
     <div class="hub-header-card">
         <div class="developer-section">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="dev-avatar" id="devFoto" onclick="gantiFotoProfil()">
+            <div style="position: relative; display: inline-block;">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="dev-avatar" id="devFoto" onclick="pemicuPilihFotoLaptop()" title="Klik untuk ganti foto dari laptop">
+                <input type="file" id="inputFotoLaptop" accept="image/*" style="display: none;" onchange="prosesGantiFotoLaptop()">
+            </div>
+            
             <div class="dev-info">
                 <div class="dev-name-row">
                     <div class="dev-name">
@@ -1627,9 +1631,29 @@
             }
         }
 
-        // --- REALTIME GANTI IDENTITAS PROFIL INTERFACE (DASHBOARD EDIT CLICK) ---
+        // =========================================================
+        //  📂 SISTEM INTERAKTIF GANTI DATA PROFIL SECARA LIVE
+        // =========================================================
+        
+        // Pemicu jendela file explorer laptop saat gambar bulat diklik
+        function pemicuPilihFotoLaptop() {
+            document.getElementById('inputFotoLaptop').click();
+        }
+
+        // Proses membaca file gambar dari laptop dan memasangnya ke halaman web
+        function prosesGantiFotoLaptop() {
+            const input = document.getElementById('inputFotoLaptop');
+            if (input.files && input.files[0]) {
+                const pembacaFile = new FileReader();
+                pembacaFile.onload = function(e) {
+                    document.getElementById('devFoto').src = e.target.result;
+                };
+                pembacaFile.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Fungsi ganti teks nama, bio, dan nama konsumen
         function gantiNamaDev() { let n = prompt("Nama Dev:", document.getElementById('devNamaText').innerText); if(n) document.getElementById('devNamaText').innerText = n; }
-        function gantiFotoProfil() { let f = prompt("Masukkan URL Link Foto Baru Kamu:", document.getElementById('devFoto').src); if(f && f.trim() !== "") document.getElementById('devFoto').src = f; }
         function gantiBioDev() { let b = prompt("Bio Dev:", document.getElementById('devBioText').innerText); if(b) document.getElementById('devBioText').innerText = b; }
         function gantiNamaKonsumen() { let k = prompt("Nama Session:", document.getElementById('clientUser').innerText); if(k) document.getElementById('clientUser').innerText = k; }
         
@@ -1644,13 +1668,12 @@
             document.getElementById('tosModal').style.display = 'none'; 
         }
         
-        // --- MULTI-VALIDATOR REALTIME REALTIME SUBMIT BUTTON FILTER KEY ---
+        // --- MULTI-VALIDATOR REALTIME SUBMIT BUTTON FILTER KEY ---
         function toggleTosButton() {
             let kontak = document.getElementById('kontakPembeli').value.trim();
             let dicentang = document.getElementById('checkTos').checked;
             let btn = document.getElementById('btnSetujuTos');
             
-            // Regex Validasi Format Alamat Email atau Nomor Telepon Seluler Internasional
             let emailAtauWaRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$|^\+?[0-9]{8,15}$/;
             let kontakValid = emailAtauWaRegex.test(kontak);
             
@@ -1660,7 +1683,6 @@
                 statusStrukAman = (strukInput.length > 0);
             }
             
-            // Tombol Konfirmasi baru menyala jika kontak valid, kotak dicentang, DAN struk sudah dimasukkan (jika via bank)
             if(kontakValid && dicentang && statusStrukAman) { 
                 btn.classList.add('active'); 
             } else { 
