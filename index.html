@@ -1629,6 +1629,7 @@
 
         // --- REALTIME GANTI IDENTITAS PROFIL INTERFACE (DASHBOARD EDIT CLICK) ---
         function gantiNamaDev() { let n = prompt("Nama Dev:", document.getElementById('devNamaText').innerText); if(n) document.getElementById('devNamaText').innerText = n; }
+        function gantiFotoProfil() { let f = prompt("Masukkan URL Link Foto Baru Kamu:", document.getElementById('devFoto').src); if(f && f.trim() !== "") document.getElementById('devFoto').src = f; }
         function gantiBioDev() { let b = prompt("Bio Dev:", document.getElementById('devBioText').innerText); if(b) document.getElementById('devBioText').innerText = b; }
         function gantiNamaKonsumen() { let k = prompt("Nama Session:", document.getElementById('clientUser').innerText); if(k) document.getElementById('clientUser').innerText = k; }
         
