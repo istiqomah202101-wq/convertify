@@ -129,21 +129,12 @@
             border: 2px solid var(--accent-pink); 
             object-fit: cover; 
             cursor: pointer; 
+            background-color: var(--input-bg);
         }
 
-        .dev-info { 
-            text-align: left; 
-            flex-grow: 1; 
-        }
-
-        .dev-name-row { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            width: 100%; 
-            gap: 20px; 
-        }
-
+        .dev-info { text-align: left; flex-grow: 1; }
+        .dev-name-row { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 20px; }
+        
         .dev-name { 
             font-size: 15px; 
             font-weight: 800; 
@@ -162,12 +153,7 @@
             font-weight: 700; 
         }
 
-        .dev-socials { 
-            display: flex; 
-            gap: 28px; 
-            align-items: center; 
-            height: 40px; 
-        }
+        .dev-socials { display: flex; gap: 28px; align-items: center; height: 40px; }
 
         .social-link {
             text-decoration: none; 
@@ -413,7 +399,7 @@
             .control-row { flex-direction: column; gap: 12px; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght::400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -427,7 +413,7 @@
     <div class="hub-header-card">
         <div class="developer-section">
             <div style="position: relative; display: inline-block;">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=150&q=80" class="dev-avatar" id="devFoto" onclick="pemicuPilihFotoLaptop()" title="Klik untuk ganti foto">
+                <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=150&h=150&q=80" class="dev-avatar" id="devFoto" onclick="pemicuPilihFotoLaptop()" title="Klik untuk ganti foto">
                 <input type="file" id="inputFotoLaptop" accept="image/*" style="display: none;" onchange="prosesGantiFotoLaptop()">
             </div>
             
